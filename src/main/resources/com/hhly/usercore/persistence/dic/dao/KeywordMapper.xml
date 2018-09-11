@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hhly.usercore.persistence.dic.dao.KeywordMapper" >
+	<resultMap type="com.hhly.skeleton.user.bo.KeywordBO" id="BaseResultMap">
+	  	<id column="ID" property="id" jdbcType="INTEGER"/>
+	  	<result column="KEYWORD" property="keyword" jdbcType="VARCHAR"/>
+	  	<result column="GRADE" property="grade" jdbcType="VARCHAR"/>
+	  	<result column="STATUS" property="status" jdbcType="VARCHAR"/>
+	  	<result column="REPLACED" property="replaced" jdbcType="VARCHAR"/>
+	  	<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 查询敏感词信息 -->
+	<select id="queryKeywordInfo" resultMap="BaseResultMap" >
+		SELECT KEYWORD FROM CMS_KEYWORD WHERE STATUS = 1
+	</select>
+</mapper>

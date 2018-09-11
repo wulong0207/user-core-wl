@@ -1,0 +1,231 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.wl</groupId>
+  <artifactId>user-core-wl</artifactId>
+  <version>1.0</version>  
+  <packaging>jar</packaging>
+	<name>user-core-wl</name>
+  <description>彩票用户系统核心业务层</description>
+  
+	<properties>
+		<lotto-skeleton.version>0.0.1-SNAPSHOT</lotto-skeleton.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <encoding>UTF-8</encoding>
+	</properties>
+	
+    <parent>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-parent</artifactId>
+      <version>1.5.8.RELEASE</version>
+  	</parent>
+  		
+	<dependencies>
+	
+  		<dependency>
+			<groupId>com.wl</groupId>
+			<artifactId>lotto-skeleton-wl</artifactId>
+			<version>${lotto-skeleton.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>					
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-web</artifactId>					
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-api</artifactId>					
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-core</artifactId>					
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-1.2-api</artifactId>					
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-slf4j-impl</artifactId>					
+				</exclusion>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>	
+
+		<!-- spring boot start -->
+	    <dependency>
+	      <groupId>org.springframework.boot</groupId>
+	      <artifactId>spring-boot-starter-web</artifactId>
+	    </dependency>
+    		
+	    <dependency>
+	      <groupId>org.springframework.boot</groupId>
+	      <artifactId>spring-boot-starter-test</artifactId>
+	      <scope>test</scope>
+	    </dependency>
+	
+	    <dependency>
+	      <groupId>org.springframework.boot</groupId>
+	      <artifactId>spring-boot-starter-actuator</artifactId>
+	    </dependency>
+	    
+        <dependency>  
+            <groupId>org.springframework.boot</groupId>  
+            <artifactId>spring-boot-starter-aop</artifactId>  
+        </dependency>          	    
+	    
+	    <dependency>
+	       <groupId>org.springframework.boot</groupId>
+	       <artifactId>spring-boot-starter-amqp</artifactId>
+	    </dependency>	  
+	    	    	
+	    <dependency>
+	      <groupId>org.springframework.boot</groupId>
+	      <artifactId>spring-boot-starter-data-redis</artifactId>
+	    </dependency>
+
+	<!-- 	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency> -->
+
+		<!-- mybatis -->
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+	
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.0.1</version>
+        </dependency>			    
+	    
+		<!-- 配置文件加密包引入 -->
+		<dependency>
+			<groupId>com.github.ulisesbocchio</groupId>
+			<artifactId>jasypt-spring-boot</artifactId>
+			<version>1.14</version>
+		</dependency>	    		
+		<!-- spring boot end -->	        	
+			
+		<!-- json 工具类  -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+        <!-- json 工具类  -->
+				
+		<!-- druid  add by scott 2017-1-12 start -->
+		<dependency>
+             <groupId>com.alibaba</groupId>
+             <artifactId>druid</artifactId>
+             <version>1.0.27</version>
+        </dependency>
+        <!-- druid  add by scott end -->
+
+		<!--xstream start -->
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.4</version>
+		</dependency>
+		<!--xstream end -->
+
+		<!-- json support -->
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+
+        <!--hessian start -->
+		<dependency>
+			<groupId>com.caucho</groupId>
+			<artifactId>hessian</artifactId>
+			<version>4.0.38</version>
+		</dependency>
+		<!--hessian end -->
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+		<dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.5.2</version>
+        </dependency>
+        
+        <dependency>
+        	<groupId>jdom</groupId>
+        	<artifactId>jdom</artifactId>
+        	<version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+		<!-- mysql 连接库 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.38</version>
+		</dependency>
+
+        <!-- 在applicationContext-mvc中引入了org.springframework.http.converter.json.MappingJackson2HttpMessageConverter，不导下面的jar，启动会报错 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		
+		<!-- redis分布式相关jar，当前环境下版本最大只能用这个，再往上就会报错，需要修改环境 -->
+		<dependency>
+			<groupId>org.redisson</groupId>
+			<artifactId>redisson</artifactId>
+			<version>2.8.2</version>
+		</dependency>	
+		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.1</version>
+		</dependency>			
+
+    </dependencies>
+  
+		<build>
+			<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<compilerArguments>
+						<extdirs>src/main/webapp/WEB-INF/lib</extdirs>
+					</compilerArguments>
+				</configuration>
+			</plugin>
+			</plugins>
+		</build>  
+</project>

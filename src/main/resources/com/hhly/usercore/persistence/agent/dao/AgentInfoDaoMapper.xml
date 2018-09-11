@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhly.usercore.persistence.agent.dao.AgentInfoDaoMapper">
+  <resultMap id="BaseResultMap" type="com.hhly.usercore.persistence.agent.po.AgentInfoPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="agent_code" jdbcType="VARCHAR" property="agentCode" />
+    <result column="parent_agent_id" jdbcType="INTEGER" property="parentAgentId" />
+    <result column="agent_level" jdbcType="SMALLINT" property="agentLevel" />
+    <result column="agent_status" jdbcType="BIT" property="agentStatus" />
+    <result column="agent_time" jdbcType="TIMESTAMP" property="agentTime" />
+    <result column="agent_wallet" jdbcType="DECIMAL" property="agentWallet" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  
+ 
+  <sql id="Base_Column_List">
+    id, user_id, agent_code, parent_agent_id, agent_level, agent_status, agent_time, 
+    agent_wallet, update_time, remark
+  </sql>
+
+  <select id="findCountByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select 
+    count(1)
+    from agent_info
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findCountByCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select 
+    count(1)
+    from agent_info
+    where agent_code = #{agentCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List"/>
+  	from agent_info
+  	where user_id = #{userId,jdbcType=INTEGER}
+  </select>    
+  
+  <select id="findByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List"/>
+  	from agent_info
+  	where agent_code = #{agentCode,jdbcType=VARCHAR}
+  </select>
+  
+  <insert id="insert" parameterType="com.hhly.usercore.persistence.agent.po.AgentInfoPO" 
+  useGeneratedKeys="true" keyProperty="id">
+    insert into agent_info (user_id, agent_code, 
+      parent_agent_id, agent_level, agent_status, 
+      agent_time, remark)
+    values (#{userId,jdbcType=INTEGER}, #{agentCode,jdbcType=VARCHAR}, 
+      #{parentAgentId,jdbcType=INTEGER}, #{agentLevel,jdbcType=SMALLINT}, #{agentStatus,jdbcType=BIT}, 
+      now(), #{remark,jdbcType=VARCHAR})
+  </insert>
+  
+</mapper>

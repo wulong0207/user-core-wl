@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhly.usercore.persistence.pay.dao.PayBankDaoMapper">
+	<resultMap id="BaseResultMap" type="com.hhly.skeleton.pay.bo.PayBankBO">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="CNAME" jdbcType="VARCHAR" property="cName" />
+		<result column="STATUS" jdbcType="SMALLINT" property="status" />
+		<result column="PAYTYPE" jdbcType="DECIMAL" property="payType" />
+		<result column="BLOGO" jdbcType="VARCHAR" property="bLogo" />
+		<result column="SLOGO" jdbcType="VARCHAR" property="sLogo" />
+		<result column="ORDER_PC" jdbcType="SMALLINT" property="orderPc" />
+		<result column="ORDER_H5" jdbcType="SMALLINT" property="orderH5" />
+		<result column="ORDER_ANDROID" jdbcType="SMALLINT" property="orderAndroid" />
+		<result column="ORDER_IOS" jdbcType="SMALLINT" property="orderIos" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+		<result column="MODIFY_BY" jdbcType="VARCHAR" property="modifyBy" />
+		<result column="MODIFY_TIME" jdbcType="DATE" property="modifyTime" />
+		<result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+		<result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+		<result column="CODE" jdbcType="VARCHAR" property="code" />
+	</resultMap>
+
+	<sql id="base_column">
+		ID, NAME, CNAME, STATUS, PAYTYPE, BLOGO, SLOGO, ORDER_PC, ORDER_H5, ORDER_ANDROID, ORDER_IOS, REMARK,
+		CREATE_BY, MODIFY_BY, MODIFY_TIME, UPDATE_TIME, CREATE_TIME,CODE
+	</sql>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		select
+		<include refid="base_column" />
+		from PAY_BANK
+	</select>
+
+	<select id="getBankById" resultMap="BaseResultMap">
+		select
+		<include refid="base_column" />
+		from PAY_BANK WHERE ID = #{id}
+	</select>
+</mapper>

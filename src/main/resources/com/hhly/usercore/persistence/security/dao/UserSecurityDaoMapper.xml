@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hhly.usercore.persistence.security.dao.UserSecurityDaoMapper">
+
+	<resultMap type="com.hhly.skeleton.user.bo.UserInfoBO" id="userResultMap">
+	  	<id column="ID" property="id" jdbcType="INTEGER"/>
+	  	<result column="ACCOUNT_ID" property="accountId" jdbcType="VARCHAR"/>
+	  	<result column="ACCOUNT_NAME" property="account" jdbcType="VARCHAR"/>
+	  	<result column="ACCOUNT_PASSWORD" property="password" jdbcType="VARCHAR"/>
+	  	<result column="RCODE" property="rCode" jdbcType="VARCHAR"/>
+	  	<result column="NICK_NAME" property="nickname" jdbcType="VARCHAR"/>
+	  	<result column="HEAD_URL" property="headUrl" jdbcType="VARCHAR"/>
+	  	<result column="HEAD_STATUS" property="headStatus" jdbcType="INTEGER"/>
+	  	<result column="ACCOUNT_STATUS" property="accountStatus" jdbcType="INTEGER"/>
+	  	<result column="CUS_MOBILE" property="mobile" jdbcType="VARCHAR"/>
+	  	<result column="MOBILE_CHECK" property="mobileStatus" jdbcType="INTEGER"/>
+	  	<result column="MOBILE_LOGIN" property="isMobileLogin" jdbcType="INTEGER"/>
+	  	<result column="CUS_MAIL" property="email" jdbcType="VARCHAR"/>
+	  	<result column="EMAIL_CHECK" property="emailStatus" jdbcType="INTEGER"/>
+	  	<result column="EMAIL_LOGIN" property="isEmailLogin" jdbcType="INTEGER"/>
+	  	<result column="ACTUAL_NAME" property="realName" jdbcType="VARCHAR"/>
+	  	<result column="ID_NUM" property="idCard" jdbcType="VARCHAR"/>
+	  	<result column="SEX" property="sex" jdbcType="INTEGER"/>
+	  	<result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
+	  	<result column="REGIST_TIME" property="registerTime" jdbcType="TIMESTAMP"/>
+	  	<result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+	  	<result column="CHANNEL_ID" property="channelId" jdbcType="VARCHAR"/>
+	  	<result column="IP" property="ip" jdbcType="VARCHAR"/>
+	  	<result column="ACCOUNT_MODIFY" property="accountModify" jdbcType="INTEGER"/>
+	  	<result column="USER_PAY_ID" property="userPayId" jdbcType="INTEGER"/>
+	</resultMap>
+	<resultMap type="com.hhly.skeleton.user.bo.UserModifyLogBO" id="BaseResultMap">
+		<result column="ID" property="id" jdbcType="INTEGER"/>
+		<result column="USER_ID" property="userId" jdbcType="INTEGER"/>
+		<result column="USER_ACTION" property="userAction" jdbcType="INTEGER"/>
+		<result column="OPERATION_STATUS" property="operationStatus" jdbcType="INTEGER"/>
+		<result column="USER_IP" property="userIp" jdbcType="VARCHAR"/>
+		<result column="LOG_BEFORE" property="logBefore" jdbcType="VARCHAR"/>
+		<result column="LOG_AFTER" property="logAfter" jdbcType="VARCHAR"/>
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+		<result column="preLoginTime" property="preLoginTime" jdbcType="VARCHAR"/>
+		<result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+	</resultMap>
+	<resultMap type="com.hhly.skeleton.pay.bo.PayBankcardBO" id="bankResultMap">
+		<result column="ID" jdbcType="INTEGER" property="id" />
+        <result column="USERID" jdbcType="INTEGER" property="userid" />
+        <result column="REALNAME" jdbcType="VARCHAR" property="realname" />
+        <result column="BANKID" jdbcType="INTEGER" property="bankid" />
+        <result column="BANKNAME" jdbcType="VARCHAR" property="bankname" />
+        <result column="ISDEFAULT" jdbcType="INTEGER" property="isdefault" />
+        <result column="OPENBANK" jdbcType="INTEGER" property="openbank" />
+        <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+        <result column="CITY" jdbcType="VARCHAR" property="city" />
+        <result column="CARDCODE" jdbcType="VARCHAR" property="cardcode" />
+        <result column="BANKTYPE" jdbcType="INTEGER" property="banktype" />
+        <result column="OVERDUE" jdbcType="VARCHAR" property="overdue" />
+        <result column="BINDFLAG" jdbcType="INTEGER" property="bindflag" />
+        <result column="SAFECODE" jdbcType="VARCHAR" property="safecode" />
+        <result column="IP" jdbcType="VARCHAR" property="ip" />
+        <result column="EXT" jdbcType="VARCHAR" property="ext" />
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="STATUS" jdbcType="INTEGER" property="status" />
+	</resultMap>
+	<resultMap type="com.hhly.skeleton.user.bo.UserInfoLastLogBO" id="lastLogResultMap">
+		<result column="ID" jdbcType="INTEGER" property="id" />
+		<result column="USERID" jdbcType="INTEGER" property="userId" />
+		<result column="REG_TIME" jdbcType="TIMESTAMP" property="regTime" />
+		<result column="LAST_LOGIN_TIME" jdbcType="TIMESTAMP" property="lastLoginTime" />
+		<result column="LAST_FILL_TIME" jdbcType="TIMESTAMP" property="lastFillTime" />
+		<result column="LAST_ORDER_TIME" jdbcType="TIMESTAMP" property="lastOrderTime" />
+		<result column="LAST_PASSWORD_TIME" jdbcType="TIMESTAMP" property="lastUpdatePwdTime" />
+		<result column="IP" jdbcType="VARCHAR" property="ip" />
+		<result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+	</resultMap>
+
+	<!-- 添加日志 -->
+	<insert id="addModifyLog" parameterType="com.hhly.usercore.persistence.security.po.UserModifyLogPO">
+		insert into M_USER_MODIFY_LOG
+		(
+            USER_ID,
+            USER_ACTION,
+            OPERATION_STATUS,
+            USER_IP,
+            LOG_BEFORE,
+            LOG_AFTER,
+            CREATE_TIME,
+            REMARK,
+            province
+		) VALUES (
+            #{userId, jdbcType=INTEGER},
+            #{userAction, jdbcType=INTEGER},
+            #{operationStatus, jdbcType=INTEGER},
+            #{userIp, jdbcType=VARCHAR},
+            #{logBefore, jdbcType=VARCHAR},
+            #{logAfter, jdbcType=VARCHAR},
+            now(),
+            #{remark, jdbcType=VARCHAR},
+            #{province, jdbcType=VARCHAR}
+		)
+	</insert>
+
+    <select id="queryProvinceLike" parameterType="java.lang.String" resultType="com.hhly.skeleton.user.bo.MUserIpBO">
+        SELECT *
+        FROM m_user_ip t
+        WHERE t.startiptext LIKE '${ip}%'
+    </select>
+    <select id="queryProvince" statementType="CALLABLE" parameterType="java.util.Map" resultType="java.lang.String">
+        {call pr_getarea(#{ipAddresss, jdbcType=VARCHAR, mode=IN},
+        #{result, jdbcType=VARCHAR, mode=OUT})}
+    </select>
+
+    <!--添加用户最后登录记录-->
+	<insert id="addLoginLog" statementType="CALLABLE" parameterType="com.hhly.usercore.persistence.security.po.UserModifyLogPO">
+        {CALL pr_last_log(#{userId, jdbcType=INTEGER, mode=IN},
+                          #{userAction, jdbcType=INTEGER, mode=IN},
+                          #{userIp, jdbcType=VARCHAR, mode=IN},
+                          #{province, jdbcType=VARCHAR, mode=IN},
+                          #{str, jdbcType=VARCHAR, mode=IN})}
+	</insert>
+
+	<!--查询用户日志-->
+	<select id="findModifyLog" resultMap="BaseResultMap" parameterType="com.hhly.skeleton.user.vo.UserModifyLogVO">
+		SELECT
+			ID,
+			USER_ID,
+			USER_ACTION,
+			OPERATION_STATUS,
+			USER_IP,
+			LOG_BEFORE,
+			LOG_AFTER,
+			CREATE_TIME,
+			REMARK,
+			province
+		FROM M_USER_MODIFY_LOG WHERE 1=1
+		<if test="userId != null">
+			AND USER_ID = #{userId, jdbcType=INTEGER}
+		</if>
+		<if test="userAction != null">
+			AND USER_ACTION = #{userAction}
+		</if>
+		ORDER BY CREATE_TIME DESC
+	</select>
+
+	<!--清除登录错误次数-->
+	<delete id="deleteUserLoginRecord" parameterType="com.hhly.skeleton.user.vo.UserModifyLogVO">
+		DELETE FROM M_USER_MODIFY_LOG WHERE 1 = 1
+		AND USER_ID = #{userId, jdbcType=INTEGER}
+		AND USER_ACTION = #{userAction, jdbcType=INTEGER}
+		AND date_format(CREATE_TIME,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
+	</delete>
+
+	<!--查询最后一次登录记录-->
+	<select id="findLastLoginDetail" resultMap="lastLogResultMap" parameterType="java.lang.Integer">
+		SELECT
+			ID,
+			USER_ID,
+			REG_TIME,
+			LAST_LOGIN_TIME,
+			LAST_FILL_TIME,
+			LAST_ORDER_TIME,
+			LAST_PASSWORD_TIME,
+			IP,
+			PROVINCE
+	    FROM M_USER_INFO_LAST_LOG
+		WHERE USER_ID = #{userId}
+	</select>
+	
+	<!-- 个人资料展示 -->
+	<select id="findUserInfoByUserId" resultMap="userResultMap" parameterType="java.lang.Integer">
+		SELECT
+			mui.ID,
+			mui.ACCOUNT_NAME,
+			mui.NICK_NAME,
+			mui.ACCOUNT_MODIFY,
+			mui.HEAD_URL,
+			mui.CUS_MOBILE,
+			mui.MOBILE_CHECK,
+			mui.MOBILE_LOGIN,
+			mui.CUS_MAIL,
+			mui.EMAIL_CHECK,
+			mui.EMAIL_LOGIN,
+			mui.ACTUAL_NAME,
+			mui.ID_NUM,
+			mui.LAST_LOGIN_TIME,
+			mui.IP,
+			(SELECT COUNT(pb.ID) FROM PAY_BANKCARD pb WHERE pb.USERID = mui.ID AND pb.STATUS = 1) bindBankCount
+	    FROM M_USER_INFO mui where 1=1
+        and mui.ID = #{userId}
+	</select>
+	
+	<!-- 用户操作失败日志查询 -->
+	<select id="findUserOprateCount" resultType="INTEGER" parameterType="com.hhly.skeleton.user.vo.UserModifyLogVO">
+		SELECT COUNT(1) FROM M_USER_MODIFY_LOG WHERE 1=1
+		<if test="userId != null">
+			AND USER_ID = #{userId, jdbcType=INTEGER}
+		</if>
+		<if test="userAction != null">
+			AND USER_ACTION = #{userAction, jdbcType=INTEGER}
+		</if>
+		<if test="operationStatus != null">
+			AND OPERATION_STATUS = #{operationStatus, jdbcType=INTEGER}
+		</if>
+		<if test="userIp != null">
+			AND USER_IP = #{userIp, jdbcType=VARCHAR}
+		</if>
+        AND date_format(CREATE_TIME,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d') ORDER BY CREATE_TIME DESC
+	</select>
+	
+    <sql id="base_column_list">
+        ID,
+        USER_ID,
+        USER_ACTION,
+        OPERATION_STATUS,
+        USER_IP,
+        LOG_BEFORE,
+        LOG_AFTER,
+        CREATE_TIME,
+        REMARK
+
+    </sql>
+    <select id="selectCount" resultType="int" parameterType="com.hhly.skeleton.user.vo.UserModifyLogVO">
+        SELECT COUNT(1) FROM M_USER_MODIFY_LOG
+        <include refid="common_where" />
+    </select>
+
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="com.hhly.skeleton.user.vo.UserModifyLogVO">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM
+        M_USER_MODIFY_LOG
+        <include refid="common_where"/>
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+    <sql id="common_where">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="userId != null and userId > 0">
+                AND USER_ID = #{userId}
+            </if>
+
+            <if test="createTime != null and createTime != '' ">
+                AND CREATE_TIME <![CDATA[ > ]]> date_format(#{createTime},'%Y-%m-%d')
+            </if>
+            <if test="createTimeEnd != null and createTimeEnd != '' ">
+                AND CREATE_TIME <![CDATA[ <= ]]> date_format(#{createTimeEnd},'%Y-%m-%d')
+            </if>
+        </trim>
+    </sql>
+</mapper>

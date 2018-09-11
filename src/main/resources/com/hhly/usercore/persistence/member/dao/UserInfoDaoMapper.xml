@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hhly.usercore.persistence.member.dao.UserInfoDaoMapper" >
+
+	<resultMap id="BaseResultMap" type="com.hhly.usercore.persistence.member.po.UserInfoPO">
+	<id column="id" jdbcType="INTEGER" property="id" />
+	<result column="account_id" jdbcType="VARCHAR" property="accountId" />
+	<result column="account_name" jdbcType="VARCHAR" property="account" />
+	<result column="cus_mobile" jdbcType="VARCHAR" property="mobile" />
+	<result column="cus_mail" jdbcType="VARCHAR" property="email" />
+	<result column="mobile_login" jdbcType="BIT" property="isMobileLogin" />
+	<result column="email_login" jdbcType="BIT" property="isEmailLogin" />
+	<result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+	<result column="account_password" jdbcType="VARCHAR" property="password" />
+	<result column="password_grade" jdbcType="BIT" property="passwordGrade" />
+	<result column="sex" jdbcType="BIT" property="sex" />
+	<result column="actual_name" jdbcType="VARCHAR" property="realName" />
+	<result column="id_num" jdbcType="VARCHAR" property="idCard" />
+	<result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+	<result column="head_status" jdbcType="BIT" property="headStatus" />
+	<result column="address" jdbcType="VARCHAR" property="address" />
+	<result column="channel_id" jdbcType="VARCHAR" property="channelId" />
+	<result column="regist_time" jdbcType="TIMESTAMP" property="registerTime" />
+	<result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+	<result column="account_status" jdbcType="BIT" property="accountStatus" />
+	<result column="forbit_end_time" jdbcType="TIMESTAMP" property="forbitEndTime" />
+	<result column="qq_open_id" jdbcType="VARCHAR" property="qqOpenID" />
+	<result column="sina_blog_open_id" jdbcType="VARCHAR" property="sinaBlogOpenID" />
+	<result column="baidu_open_id" jdbcType="VARCHAR" property="baiduOpenID" />
+	<result column="wechat_open_id" jdbcType="VARCHAR" property="wechatOpenID" />
+	<result column="alipay_open_id" jdbcType="VARCHAR" property="alipayOpenID" />
+	<result column="jd_open_id" jdbcType="VARCHAR" property="jdOpenID" />
+	<result column="mobile_check" jdbcType="BIT" property="mobileStatus" />
+	<result column="email_check" jdbcType="BIT" property="emailStatus" />
+	<result column="account_modify" jdbcType="BIT" property="accountModify" />
+	<result column="modify_by" jdbcType="VARCHAR" property="modifyBy" />
+	<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+	<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+	<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+	<result column="remark" jdbcType="VARCHAR" property="remark" />
+	<result column="rcode" jdbcType="VARCHAR" property="rCode" />
+	<result column="head_check" jdbcType="BIT" property="headCheck" />
+	<result column="ip" jdbcType="VARCHAR" property="ip" />
+	<result column="user_pay_id" jdbcType="INTEGER" property="userPayId" />
+	<result column="msg_mob" jdbcType="BIT" property="msgMob" />
+	<result column="msg_site" jdbcType="BIT" property="msgSite" />
+	<result column="msg_app" jdbcType="BIT" property="msgApp" />
+	<result column="msg_wechat" jdbcType="BIT" property="msgWechat" />
+	<result column="mob_not_disturb" jdbcType="VARCHAR" property="mobNotDisturb" />
+	<result column="app_not_disturb" jdbcType="VARCHAR" property="appNotDisturb" />
+	<result column="qq_name" jdbcType="VARCHAR" property="qqName" />
+	<result column="wechat_name" jdbcType="VARCHAR" property="wechatName" />
+	<result column="sina_name" jdbcType="VARCHAR" property="sinaName" />
+	<result column="platform" jdbcType="TINYINT" property="platform" />
+	<result column="channel_open_id" jdbcType="VARCHAR" property="channelOpenID" />
+	<result column="user_pay_cardcode" jdbcType="VARCHAR" property="userPayCardcode" />
+	<result column="agent_code" jdbcType="VARCHAR" property="agentCode" />
+	<result column="user_type" jdbcType="BIT" property="userType" />
+	</resultMap>
+
+
+	<resultMap type="com.hhly.skeleton.user.bo.UserInfoBO" id="BoResultMap">
+		<id column="ID" property="id" jdbcType="INTEGER"/>
+		<result column="ACCOUNT_ID" property="accountId" jdbcType="VARCHAR"/>
+		<result column="ACCOUNT_NAME" property="account" jdbcType="VARCHAR"/>
+		<result column="ACCOUNT_PASSWORD" property="password" jdbcType="VARCHAR"/>
+		<result column="RCODE" property="rCode" jdbcType="VARCHAR"/>
+		<result column="NICK_NAME" property="nickname" jdbcType="VARCHAR"/>
+		<result column="HEAD_URL" property="headUrl" jdbcType="VARCHAR"/>
+		<result column="HEAD_STATUS" property="headStatus" jdbcType="INTEGER"/>
+		<result column="ACCOUNT_STATUS" property="accountStatus" jdbcType="INTEGER"/>
+		<result column="forbit_end_time" jdbcType="TIMESTAMP" property="forbitEndTime"/>
+		<result column="CUS_MOBILE" property="mobile" jdbcType="VARCHAR"/>
+		<result column="MOBILE_CHECK" property="mobileStatus" jdbcType="INTEGER"/>
+		<result column="MOBILE_LOGIN" property="isMobileLogin" jdbcType="INTEGER"/>
+		<result column="CUS_MAIL" property="email" jdbcType="VARCHAR"/>
+		<result column="EMAIL_CHECK" property="emailStatus" jdbcType="INTEGER"/>
+		<result column="EMAIL_LOGIN" property="isEmailLogin" jdbcType="INTEGER"/>
+		<result column="ACTUAL_NAME" property="realName" jdbcType="VARCHAR"/>
+		<result column="ID_NUM" property="idCard" jdbcType="VARCHAR"/>
+		<result column="SEX" property="sex" jdbcType="INTEGER"/>
+		<result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
+		<result column="REGIST_TIME" property="registerTime" jdbcType="TIMESTAMP"/>
+		<result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+		<result column="CHANNEL_ID" property="channelId" jdbcType="VARCHAR"/>
+		<result column="IP" property="ip" jdbcType="VARCHAR"/>
+		<result column="ACCOUNT_MODIFY" property="accountModify" jdbcType="INTEGER"/>
+		<result column="USER_PAY_ID" property="userPayId" jdbcType="INTEGER"/>
+		<result column="QQ_OPEN_ID" property="qqOpenID" jdbcType="VARCHAR"/>
+		<result column="WECHAT_OPEN_ID" property="wechatUnionID" jdbcType="VARCHAR"/>
+		<result column="SINA_BLOG_OPEN_ID" property="sinaBlogOpenID" jdbcType="VARCHAR"/>
+		<result column="BAIDU_OPEN_ID" property="baiduOpenID" jdbcType="VARCHAR"/>
+		<result column="ALIPAY_OPEN_ID" property="alipayOpenID" jdbcType="VARCHAR"/>
+		<result column="JD_OPEN_ID" property="jdOpenID" jdbcType="VARCHAR"/>
+		<result column="QQ_NAME" property="qqName" jdbcType="VARCHAR"/>
+		<result column="WECHAT_NAME" property="wechatName" jdbcType="VARCHAR"/>
+		<result column="SINA_NAME" property="sinaName" jdbcType="VARCHAR"/>
+		<result column="APP_NOT_DISTURB" property="appNotDisturb" jdbcType="VARCHAR"/>
+		<result column="MSG_APP" property="msgApp" jdbcType="INTEGER"/>
+		<result column="PLATFORM" property="platform" jdbcType="INTEGER"/>
+		<result column="TOTAL_CASH_BALANCE" jdbcType="DECIMAL" property="userWalletBalance"/>
+		<result column="EFF_RED_BALANCE" jdbcType="DECIMAL" property="redPackBalance"/>
+		<result column="USER_PAY_CARDCODE" jdbcType="VARCHAR" property="userPayCardcode"/>
+		<result column="USER_TYPE" jdbcType="INTEGER" property="userType"/>
+		<result column="AGENT_CODE" jdbcType="VARCHAR" property="agentCode"/>
+	</resultMap>
+
+	<sql id="columnList">
+	  	mui.ID,
+	  	mui.ACCOUNT_ID,
+	  	mui.ACCOUNT_NAME,
+	  	mui.NICK_NAME,
+	  	mui.HEAD_URL,
+	  	mui.HEAD_STATUS,
+	  	mui.ACCOUNT_STATUS,
+	  	mui.forbit_end_time,
+	  	mui.CUS_MOBILE,
+	  	mui.MOBILE_CHECK,
+	  	mui.MOBILE_LOGIN,
+	  	mui.CUS_MAIL,
+	  	mui.EMAIL_CHECK,
+	  	mui.EMAIL_LOGIN,
+	  	mui.ACTUAL_NAME,
+	  	mui.ID_NUM,
+	  	mui.SEX,
+	  	mui.ADDRESS,
+	  	mui.REGIST_TIME,
+	  	mui.LAST_LOGIN_TIME,
+	  	mui.CHANNEL_ID,
+	  	mui.ACCOUNT_MODIFY,
+	  	mui.USER_PAY_ID,
+		mui.QQ_OPEN_ID,
+		mui.WECHAT_OPEN_ID,
+		mui.CHANNEL_OPEN_ID,
+		mui.SINA_BLOG_OPEN_ID,
+		mui.QQ_NAME,
+		mui.WECHAT_NAME,
+		mui.SINA_NAME,
+		mui.PLATFORM,
+		mui.AGENT_CODE,
+		mui.USER_TYPE,
+	  	(SELECT COUNT(pb.ID) FROM PAY_BANKCARD pb WHERE pb.USERID = mui.ID AND pb.STATUS = 1) bankCount
+	</sql>
+	
+	  <sql id="Simple_Column_List">
+	    id, account_name, cus_mobile, cus_mail, nick_name, 
+	    sex, actual_name, id_num, 
+	    channel_id, regist_time, last_login_time, account_status, forbit_end_time, 
+	    mobile_check, email_check, account_modify, agent_code, user_type
+	  </sql>	
+	
+	<sql id="Base_Column_Where">
+		<where>
+		  <if test="id != null">
+		  	id = #{id, jdbcType=INTEGER}
+		  </if>
+	      <if test="accountId != null and accountId !=''">
+	        account_id = #{accountId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="account != null and account !=''">
+	        account_name = #{account,jdbcType=VARCHAR}
+	      </if>
+	      <if test="mobile != null and mobile !=''">
+	        cus_mobile = #{mobile,jdbcType=VARCHAR}
+	      </if>
+	      <if test="email != null and email !=''">
+	        cus_mail = #{email,jdbcType=VARCHAR}
+	      </if>
+	      <if test="isMobileLogin != null">
+	        mobile_login = #{isMobileLogin,jdbcType=BIT}
+	      </if>
+	      <if test="isEmailLogin != null">
+	        email_login = #{isEmailLogin,jdbcType=BIT}
+	      </if>
+	      <if test="nickName != null and nickName !=''">
+	        nick_name = #{nickName,jdbcType=VARCHAR}
+	      </if>
+	      <if test="password != null and password !=''">
+	        account_password = #{password,jdbcType=VARCHAR}
+	      </if>
+	      <if test="passwordGrade != null">
+	        password_grade = #{passwordGrade,jdbcType=BIT}
+	      </if>
+	      <if test="sex != null">
+	        sex = #{sex,jdbcType=BIT}
+	      </if>
+	      <if test="realName != null and realName !=''">
+	        actual_name = #{realName,jdbcType=VARCHAR}
+	      </if>
+	      <if test="idCard != null and idCard !=''">
+	        id_num = #{idCard,jdbcType=VARCHAR}
+	      </if>
+	      <if test="headStatus != null">
+	        head_status = #{headStatus,jdbcType=BIT}
+	      </if>
+	      <if test="channelId != null and channelId !=''">
+	        channel_id = #{channelId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="accountStatus != null">
+	        account_status = #{accountStatus,jdbcType=BIT}
+	      </if>
+	      <if test="qqOpenID != null and qqOpenID !=''">
+	        qq_open_id = #{qqOpenId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="sinaBlogOpenID != null and sinaBlogOpenID !=''">
+	        sina_blog_open_id = #{sinaBlogOpenId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="baiduOpenID != null and baiduOpenID !=''">
+	        baidu_open_id = #{baiduOpenId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="wechatOpenID != null and wechatOpenID !=''">
+	        wechat_open_id = #{wechatOpenId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="alipayOpenID != null and alipayOpenID !=''">
+	        alipay_open_id = #{alipayOpenId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="jdOpenID != null and jdOpenID !=''">
+	        jd_open_id = #{jdOpenId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="mobileStatus != null">
+	        mobile_check = #{mobileStatus,jdbcType=BIT}
+	      </if>
+	      <if test="emailStatus != null">
+	        email_check = #{emailStatus,jdbcType=BIT}
+	      </if>
+	      <if test="accountModify != null">
+	        account_modify = #{accountModify,jdbcType=BIT}
+	      </if>
+	      <if test="headCheck != null">
+	        head_check = #{headCheck,jdbcType=BIT}
+	      </if>
+	      <if test="platform != null">
+	        platform = #{platform,jdbcType=TINYINT}
+	      </if>
+	      <if test="channelOpenID != null and channelOpenID !=''">
+	        channel_open_id = #{channelOpenID,jdbcType=VARCHAR}
+	      </if>
+	      <if test="agentCode != null and agentCode !=''">
+	        agent_code = #{agentCode,jdbcType=VARCHAR}
+	      </if>
+	      <if test="userType != null">
+	        user_type = #{userType,jdbcType=BIT}
+	      </if>		
+		</where>		
+	</sql>
+
+	<select id="findUserInfoList" resultMap="BoResultMap" parameterType="com.hhly.skeleton.user.vo.UserInfoVO" >
+		SELECT
+		mui.ACCOUNT_PASSWORD,
+		mui.RCODE,
+		<include refid="columnList"/>
+		FROM M_USER_INFO mui WHERE 1=1
+		<if test="mobile !=null">
+			AND mui.CUS_MOBILE = #{mobile}
+		</if>
+		<if test="mobileStatus != null">
+			AND mui.MOBILE_CHECK = #{mobileStatus}
+		</if>
+		<if test="email != null">
+			AND mui.CUS_MAIL = #{email}
+		</if>
+		<if test="emailStatus != null">
+			AND mui.EMAIL_CHECK = #{emailStatus}
+		</if>
+	</select>
+
+	<!--按条件查询用户集合-->
+	<select id="findUserIdList" resultType="java.lang.Integer" parameterType="com.hhly.skeleton.user.vo.UserInfoVO">
+		SELECT
+		id
+		FROM M_USER_INFO WHERE 1=1
+		<if test="mobile != null">
+			AND CUS_MOBILE = #{mobile}
+		</if>
+		<if test="idCard != null">
+			AND ID_NUM = #{idCard}
+		</if>
+		<if test="realName != null">
+			AND ACTUAL_NAME = #{realName}
+		</if>
+	</select>
+
+	<select id="findUserNameList" parameterType="com.hhly.skeleton.user.vo.UserInfoVO" resultType="com.hhly.skeleton.user.bo.UserResultBO">
+		SELECT
+		ID id,
+		ACCOUNT_NAME account,
+		ACTUAL_NAME realName
+		FROM M_USER_INFO WHERE account_status = 1
+		<if test="account != null">
+			AND ACCOUNT_NAME = #{account, jdbcType=VARCHAR}
+		</if>
+		<if test="mobile != null">
+			AND CUS_MOBILE = #{mobile, jdbcType=VARCHAR}
+		</if>
+		<if test="realName != null">
+			AND ACTUAL_NAME = #{realName, jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<!-- 通过手机号查询账号信息 -->
+	<select id="findUserInfoByUserId" resultMap="BoResultMap">
+		SELECT
+		mui.ACCOUNT_PASSWORD,
+		mui.RCODE,
+		mui.APP_NOT_DISTURB,
+		mui.MSG_APP,
+		<include refid="columnList"/>
+		FROM M_USER_INFO mui WHERE mui.ID = #{id, jdbcType=VARCHAR}
+	</select>
+
+	<select id="findUserInfo" resultMap="BoResultMap">
+		SELECT
+			mui.ACCOUNT_PASSWORD,
+			mui.RCODE,
+			<include refid="columnList" />
+		FROM M_USER_INFO mui WHERE 1=1
+		<if test="id != null">
+			AND mui.ID = #{id, jdbcType=INTEGER}
+		</if>
+		<if test="account !=null">
+			AND mui.ACCOUNT_NAME = #{account}
+		</if>
+		<if test="nickname != null">
+			AND mui.NICK_NAME = #{nickname, jdbcType=VARCHAR}
+		</if>
+		<if test="realName != null">
+			AND mui.ACTUAL_NAME = #{realName, jdbcType=VARCHAR}
+		</if>
+		<if test="mobile !=null">
+			AND mui.CUS_MOBILE = #{mobile}
+		</if>
+		<if test="mobileStatus != null">
+			AND mui.MOBILE_CHECK = #{mobileStatus}
+		</if>
+		<if test="isMobileLogin != null">
+			AND mui.MOBILE_LOGIN = #{isMobileLogin}
+		</if>
+		<if test="email != null">
+			AND mui.CUS_MAIL = #{email}
+		</if>
+		<if test="emailStatus != null">
+			AND mui.EMAIL_CHECK = #{emailStatus}
+		</if>
+		<if test="isEmailLogin != null">
+			AND mui.EMAIL_LOGIN = #{isEmailLogin}
+		</if>
+		<if test="qqOpenID != null">
+			AND mui.QQ_OPEN_ID = #{qqOpenID}
+		</if>
+		<if test="wechatOpenID != null">
+			AND mui.WECHAT_OPEN_ID = #{wechatOpenID}
+		</if>
+		<if test="sinaBlogOpenID != null">
+			AND mui.SINA_BLOG_OPEN_ID = #{sinaBlogOpenID}
+		</if>
+		<if test="channelId != null">
+			AND mui.channel_id = #{channelId}
+		</if>
+		<if test="channelOpenID != null">
+			AND mui.CHANNEL_OPEN_ID  = #{channelOpenID}
+		</if>
+	</select>
+
+	<!--通过帐户名查询用户信息-->
+	<select id="findUserInfoByAccount" resultType="INTEGER" parameterType="com.hhly.skeleton.user.vo.UserInfoVO">
+		SELECT COUNT(1) FROM M_USER_INFO mui WHERE 1=1
+		<if test="id != null">
+			AND mui.ID != #{id, jdbcType=INTEGER}
+		</if>
+		AND (mui.ACCOUNT_NAME = #{account} OR mui.NICK_NAME = #{nickname})
+	</select>
+
+	<!-- 通过帐号查询账号信息并存入缓存中 -->
+	<select id="findUserInfoToCache" resultMap="BoResultMap" parameterType="com.hhly.skeleton.user.vo.UserInfoVO" >
+		SELECT
+		<include refid="columnList" />
+		FROM M_USER_INFO mui WHERE 1=1
+		<if test="id != null">
+			AND mui.ID = #{id, jdbcType=INTEGER}
+		</if>
+		<if test="account != null">
+			AND mui.ACCOUNT_NAME = #{account, jdbcType=VARCHAR}
+		</if>
+		<if test="nickname != null">
+			AND mui.NICK_NAME = #{nickname, jdbcType=VARCHAR}
+		</if>
+		<if test="realName != null">
+			AND mui.ACTUAL_NAME = #{realName, jdbcType=VARCHAR}
+		</if>
+		<if test="mobile !=null">
+			AND mui.CUS_MOBILE = #{mobile, jdbcType=VARCHAR}
+		</if>
+		<if test="mobileStatus != null">
+			AND mui.MOBILE_CHECK = #{mobileStatus}
+		</if>
+		<if test="isMobileLogin != null">
+			AND mui.MOBILE_LOGIN = #{isMobileLogin}
+		</if>
+		<if test="email !=null">
+			AND mui.CUS_MAIL = #{email, jdbcType=VARCHAR}
+		</if>
+		<if test="emailStatus != null">
+			AND mui.EMAIL_CHECK = #{emailStatus}
+		</if>
+		<if test="isEmailLogin != null">
+			AND mui.EMAIL_LOGIN = #{isEmailLogin}
+		</if>
+	</select>
+
+	<select id="findUserWalletById" resultMap="BoResultMap" parameterType="java.lang.Integer">
+		SELECT
+		muw.TOTAL_CASH_BALANCE,
+		muw.EFF_RED_BALANCE,
+		(
+		select count(oc.id) from OPERATE_COUPON oc where 1=1
+		and oc.USER_ID = muw.USER_ID
+		and (oc.red_status = 1 or oc.red_status = 3)
+		<![CDATA[
+			AND red_overdue_time > now()
+			AND DATE_SUB(red_overdue_time,INTERVAL 3 DAY) < now()
+		]]>
+		) expireCount
+		FROM M_USER_WALLET muw
+		where 1=1
+		and muw.USER_ID = #{userId, jdbcType=INTEGER}
+	</select>
+
+	<select id="findUserInfoByIdCard" resultType="INTEGER">
+		SELECT COUNT(*) FROM M_USER_INFO WHERE ID_NUM = #{idCard, jdbcType=INTEGER}
+	</select>
+
+	<!-- 用户首页展示 -->
+	<select id="findUserIndexByUserId" resultMap="BoResultMap" parameterType="com.hhly.skeleton.user.vo.UserInfoVO">
+		SELECT
+		muw.TOTAL_CASH_BALANCE,
+		muw.EFF_RED_BALANCE,
+		(
+		select sum(red_balance) from OPERATE_COUPON oc WHERE oc.USER_ID = mui.ID AND oc.red_status = 3 AND oc.RED_TYPE = 3
+		<if test="limitPlatform != null and limitPlatform != ''">
+			and find_in_set(#{limitPlatform}, IFNULL(oc.limit_platform,'')) = 0
+		</if>
+		<if test="channelId != null">
+			and find_in_set(#{channelId}, IFNULL(oc.channel_id,'')) = 0
+		</if>
+		) lottoRedPackBalance,
+		(
+		select count(oc.id) from OPERATE_COUPON oc where
+		oc.USER_ID = mui.ID
+		and oc.red_status =3
+		<![CDATA[
+			AND red_overdue_time > now()
+			AND DATE_SUB(red_overdue_time,INTERVAL 3 DAY) < now()
+		]]>
+		) expireCount,
+		(
+		select count(oc.id) from OPERATE_COUPON oc WHERE oc.USER_ID = mui.ID AND oc.red_status = 3
+		<if test="limitPlatform != null and limitPlatform != ''">
+			and find_in_set(#{limitPlatform}, IFNULL(oc.limit_platform,'')) = 0
+		</if>
+		<if test="channelId != null">
+			and find_in_set(#{channelId}, IFNULL(oc.channel_id,'')) = 0
+		</if>
+		) validCount,
+		<include refid="columnList"/>
+		FROM M_USER_INFO mui left join M_USER_WALLET muw on mui.ID = muw.USER_ID
+		where 1=1
+		and mui.ID = #{id, jdbcType=INTEGER}
+	</select>
+
+	<!-- 个人资料展示 -->
+	<select id="findUserPasonalDataByUserId" resultMap="BoResultMap" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="columnList" />
+		FROM M_USER_INFO mui where 1=1
+		and mui.ID = #{id, jdbcType=INTEGER}
+	</select>
+
+	<select id="findBindMECount" resultType="INTEGER" parameterType="com.hhly.skeleton.user.vo.UserInfoVO">
+		SELECT COUNT(*) FROM M_USER_INFO WHERE 1=1
+		<if test="mobile != null">
+			AND CUS_MOBILE = #{mobile}
+		</if>
+		<if test="mobileStatus != null">
+			AND MOBILE_CHECK = #{mobileStatus}
+		</if>
+		<if test="email != null">
+			AND CUS_MAIL = #{email}
+		</if>
+		<if test="emailStatus != null">
+			AND EMAIL_CHECK = #{emailStatus}
+		</if>
+	</select>
+
+	<!-- 修改用户基本信息 -->
+	<update id="updateUserInfo" parameterType="com.hhly.usercore.persistence.member.po.UserInfoPO">
+		UPDATE M_USER_INFO
+		<set>
+			<if test="account != null">
+				ACCOUNT_NAME = #{account, jdbcType=VARCHAR},
+			</if>
+			<if test="nickName != null">
+				NICK_NAME = #{nickName, jdbcType=VARCHAR},
+			</if>
+			<if test="channelId != null">
+				CHANNEL_ID = #{channelId},
+			</if>
+			<if test="accountStatus != null">
+				ACCOUNT_STATUS = #{accountStatus},
+			</if>
+			<if test="forbitEndTime != null">
+				FORBIT_END_TIME = #{forbitEndTime},
+			</if>
+			<if test="password != null">
+				ACCOUNT_PASSWORD = #{password, jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				CUS_MOBILE = #{mobile, jdbcType=VARCHAR},
+			</if>
+			<if test="isMobileLogin != null">
+				MOBILE_LOGIN = #{isMobileLogin, jdbcType=INTEGER},
+			</if>
+			<if test="mobileStatus != null">
+				MOBILE_CHECK = #{mobileStatus, jdbcType=INTEGER},
+			</if>
+			<if test="email != null">
+				CUS_MAIL = #{email, jdbcType=VARCHAR},
+			</if>
+			<if test="isEmailLogin != null">
+				EMAIL_LOGIN = #{isEmailLogin, jdbcType=INTEGER},
+			</if>
+			<if test="emailStatus != null">
+				EMAIL_CHECK = #{emailStatus, jdbcType=INTEGER},
+			</if>
+			<if test="accountModify != null">
+				ACCOUNT_MODIFY = #{accountModify, jdbcType=INTEGER},
+			</if>
+			<if test="realName != null">
+				ACTUAL_NAME = #{realName, jdbcType=VARCHAR},
+			</if>
+			<if test="idCard != null">
+				ID_NUM = #{idCard, jdbcType=VARCHAR},
+			</if>
+			<if test="rCode != null">
+				RCODE = #{rCode, jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				IP = #{ip},
+			</if>
+			<if test="lastLoginTime != null">
+				LAST_LOGIN_TIME = #{lastLoginTime},
+			</if>
+			<if test="userPayId != null">
+				USER_PAY_ID = #{userPayId, jdbcType=INTEGER},
+			</if>
+			<if test="qqOpenID != null">
+				QQ_OPEN_ID = #{qqOpenID},
+			</if>
+			<if test="wechatOpenID != null">
+				WECHAT_OPEN_ID = #{wechatOpenID},
+			</if>
+			<if test="sinaBlogOpenID != null">
+				SINA_BLOG_OPEN_ID = #{sinaBlogOpenID},
+			</if>
+			<if test="qqName != null">
+				QQ_NAME = #{qqName},
+			</if>
+			<if test="wechatName != null">
+				WECHAT_NAME = #{wechatName},
+			</if>
+			<if test="sinaName != null">
+				SINA_NAME = #{sinaName},
+			</if>
+			<if test="headUrl != null">
+				HEAD_URL = #{headUrl},
+			</if>
+			<if test="appNotDisturb != null">
+				APP_NOT_DISTURB = #{appNotDisturb},
+			</if>
+			<if test="msgApp != null">
+				MSG_APP = #{msgApp},
+			</if>
+			<if test="userPayCardcode != null and userPayCardcode != ''">
+				USER_PAY_CARDCODE = #{userPayCardcode},
+			</if>
+			<if test="channelOpenID != null and channelOpenID != ''">
+				CHANNEL_OPEN_ID =  #{channelOpenID},
+			</if>			
+		</set>
+		WHERE ID = #{id, jdbcType=INTEGER}
+	</update>
+
+	<!-- 新增用户 -->
+	<insert id="addUser" parameterType="com.hhly.usercore.persistence.member.po.UserInfoPO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO M_USER_INFO (
+		ACCOUNT_ID,
+		ACCOUNT_NAME,
+		ACCOUNT_PASSWORD,
+		RCODE,
+		NICK_NAME,
+		HEAD_URL,
+		HEAD_STATUS,
+		ACCOUNT_STATUS,
+		CUS_MOBILE,
+		MOBILE_CHECK,
+		MOBILE_LOGIN,
+		CUS_MAIL,
+		EMAIL_CHECK,
+		EMAIL_LOGIN,
+		ACTUAL_NAME,
+		ID_NUM,
+		SEX,
+		ADDRESS,
+		REGIST_TIME,
+		CHANNEL_ID,
+		IP,
+		ACCOUNT_MODIFY,
+		QQ_OPEN_ID,
+		WECHAT_OPEN_ID,
+		SINA_BLOG_OPEN_ID,
+		CHANNEL_OPEN_ID,
+		USER_PAY_ID,
+		PLATFORM,
+		QQ_NAME,
+		WECHAT_NAME,
+		SINA_NAME,
+		USER_TYPE,
+		AGENT_CODE
+		) VALUES (
+		#{accountId, jdbcType=VARCHAR},
+		#{account, jdbcType=VARCHAR},
+		#{password, jdbcType=VARCHAR},
+		#{rCode, jdbcType=VARCHAR},
+		#{nickName, jdbcType=VARCHAR},
+		#{headUrl, jdbcType=VARCHAR},
+		#{headStatus, jdbcType=INTEGER},
+		#{accountStatus, jdbcType=INTEGER},
+		#{mobile, jdbcType=VARCHAR},
+		#{mobileStatus, jdbcType=INTEGER},
+		#{isMobileLogin, jdbcType=INTEGER},
+		#{email, jdbcType=VARCHAR},
+		#{emailStatus, jdbcType=INTEGER},
+		#{isEmailLogin, jdbcType=INTEGER},
+		#{realName, jdbcType=VARCHAR},
+		#{idCard, jdbcType=VARCHAR},
+		#{sex, jdbcType=INTEGER},
+		#{address, jdbcType=VARCHAR},
+		now(),
+		#{channelId, jdbcType=VARCHAR},
+		#{ip, jdbcType=VARCHAR},
+		#{accountModify, jdbcType=INTEGER},
+		#{qqOpenID, jdbcType=VARCHAR},
+		#{wechatOpenID,jdbcType=VARCHAR},
+		#{sinaBlogOpenID,jdbcType=VARCHAR},
+		#{channelOpenID,jdbcType=VARCHAR},
+		#{userPayId, jdbcType=INTEGER},
+		#{platform, jdbcType=INTEGER},
+		#{qqName,jdbcType=VARCHAR},
+		#{wechatName,jdbcType=VARCHAR},
+		#{sinaName,jdbcType=VARCHAR},
+		#{userType,jdbcType=INTEGER},
+		#{agentCode,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 新增改版查询 -->
+	<select id="findSimpleUserInfo" parameterType="com.hhly.usercore.persistence.member.po.UserInfoPO" resultMap="BaseResultMap">
+		select 
+		<include refid="Simple_Column_List" />
+		from M_USER_INFO
+		<include refid="Base_Column_Where"/>
+	</select>
+
+	<!--通过渠道oepnId查询帐户id-->
+	<select id="getUserIdByChannelOpenId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT mui.id channelMemberId FROM m_user_info WHERE channel_open_id = #{channelOpenId}
+	</select>
+	
+</mapper>

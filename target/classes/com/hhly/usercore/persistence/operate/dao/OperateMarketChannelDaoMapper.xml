@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhly.usercore.persistence.operate.dao.OperateMarketChannelDaoMapper">
+  <resultMap id="BaseResultMap" type="com.hhly.usercore.persistence.operate.po.OperateMarketChannelPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="channel_id" jdbcType="VARCHAR" property="channelId" />
+    <result column="channel_name" jdbcType="VARCHAR" property="channelName" />
+    <result column="terminal_platform" jdbcType="BIT" property="terminalPlatform" />
+    <result column="parent_channel_id" jdbcType="VARCHAR" property="parentChannelId" />
+    <result column="grade" jdbcType="BIT" property="grade" />
+    <result column="settlement_type" jdbcType="DECIMAL" property="settlementType" />
+    <result column="resource_name" jdbcType="VARCHAR" property="resourceName" />
+    <result column="resource_url" jdbcType="VARCHAR" property="resourceUrl" />
+    <result column="settlement_rate" jdbcType="DECIMAL" property="settlementRate" />
+    <result column="coop_start_time" jdbcType="TIMESTAMP" property="coopStartTime" />
+    <result column="coop_end_time" jdbcType="TIMESTAMP" property="coopEndTime" />
+    <result column="channel_status" jdbcType="BIT" property="channelStatus" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="modify_by" jdbcType="VARCHAR" property="modifyBy" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="app_url" jdbcType="VARCHAR" property="appUrl" />
+    <result column="majia" jdbcType="BIT" property="majia" />
+    <result column="secret_key" jdbcType="VARCHAR" property="secretKey" />
+  </resultMap>
+  
+
+  <sql id="Base_Column_List">
+    id, channel_id, channel_name, terminal_platform, parent_channel_id, grade, settlement_type, 
+    resource_name, resource_url, settlement_rate, coop_start_time, coop_end_time, channel_status, 
+    modify_time, modify_by, create_by, update_time, create_time, remark, app_url, majia, 
+    secret_key
+  </sql>
+  
+  <sql id="Base_Column_Where">
+  	<where>
+     <if test="channelId != null">
+        and channel_id = #{channelId,jdbcType=VARCHAR}
+      </if>
+      <if test="channelName != null">
+        and channel_name = #{channelName,jdbcType=VARCHAR}
+      </if>
+      <if test="terminalPlatform != null">
+        and terminal_platform = #{terminalPlatform,jdbcType=BIT}
+      </if>
+      <if test="parentChannelId != null">
+        and parent_channel_id = #{parentChannelId,jdbcType=VARCHAR}
+      </if>
+      <if test="grade != null">
+        and grade = #{grade,jdbcType=BIT}
+      </if>
+      <if test="settlementType != null">
+        and settlement_type = #{settlementType,jdbcType=DECIMAL}
+      </if>
+      <if test="resourceName != null">
+        and and resource_name = #{resourceName,jdbcType=VARCHAR}
+      </if>
+      <if test="resourceUrl != null">
+        and resource_url = #{resourceUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="settlementRate != null">
+        and settlement_rate = #{settlementRate,jdbcType=DECIMAL}
+      </if>
+      <if test="channelStatus != null">
+        and channel_status = #{channelStatus,jdbcType=BIT}
+      </if>
+      <if test="majia != null">
+        and majia = #{majia,jdbcType=BIT}
+      </if>
+      <if test="secretKey != null">
+        and secret_key = #{secretKey,jdbcType=VARCHAR}
+      </if>  		
+  	</where>
+  </sql>
+  
+  <select id="findByChannelId" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from operate_market_channel
+	where channel_id = #{channelId}
+  	limit 0,1
+  </select>
+  
+  <select id="findTopChannelId" resultType="java.lang.String">
+    <![CDATA[
+		SELECT T2.channel_id 
+		FROM ( 
+		    SELECT 
+		         @r AS _id, 
+		        (SELECT @r := parent_channel_id FROM operate_market_channel WHERE channel_id = _id) AS parent_id, 
+		        @l := @l + 1 AS rownum 
+		    FROM 
+		        (SELECT @r := ${channelId}, @l := 0) vars, 
+		        operate_market_channel h 
+		    WHERE @r <> 0) T1 
+		JOIN operate_market_channel T2 
+		ON T1._id = T2.channel_id 
+		where T1.rownum = ${rownum}
+	 ]]>	
+  </select>
+
+
+</mapper>

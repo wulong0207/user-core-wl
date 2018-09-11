@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhly.usercore.persistence.pay.dao.LotteryTypeMapper">
+  <resultMap id="BaseResultMap" type="com.hhly.skeleton.user.bo.LotteryTypeBO">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="LOTTERY_CODE" jdbcType="DECIMAL" property="lotteryCode" />
+    <result column="LOTTERY_NAME" jdbcType="OTHER" property="lotteryName" />
+    <result column="CON_ISSUE_NUM" jdbcType="DECIMAL" property="conIssueNum" />
+    <result column="STOP_ADD_ISSUE" jdbcType="DECIMAL" property="stopAddIssue" />
+    <result column="LOTTERY_LOGO_URL" jdbcType="VARCHAR" property="lotteryLogoUrl" />
+    <result column="ADMIN_CATEGORY" jdbcType="DECIMAL" property="adminCategory" />
+    <result column="LOTTERY_CATEGORY" jdbcType="DECIMAL" property="lotteryCategory" />
+    <result column="SALE_STATUS" jdbcType="DECIMAL" property="saleStatus" />
+    <result column="AREA" jdbcType="DECIMAL" property="area" />
+    <result column="AUTO_TYPE" jdbcType="DECIMAL" property="autoType" />
+    <result column="SYN_ISSUE" jdbcType="DECIMAL" property="synIssue" />
+    <result column="SALE_TIME" jdbcType="DECIMAL" property="saleTime" />
+    <result column="BUY_END_TIME" jdbcType="DECIMAL" property="buyEndTime" />
+    <result column="SPLIT_MAX_NUM" jdbcType="DECIMAL" property="splitMaxNum" />
+    <result column="END_CHECK_TIME" jdbcType="DECIMAL" property="endCheckTime" />
+    <result column="SPLIT_MAX_AMOUNT" jdbcType="DECIMAL" property="splitMaxAmount" />
+    <result column="START_SAIL_TIME" jdbcType="VARCHAR" property="startSailTime" />
+    <result column="END_SAIL_TIME" jdbcType="VARCHAR" property="endSailTime" />
+    <result column="SAIL_DAY_CYCLE" jdbcType="VARCHAR" property="sailDayCycle" />
+    <result column="VACATIONS" jdbcType="VARCHAR" property="vacations" />
+    <result column="CREATE_BY" jdbcType="OTHER" property="createBy" />
+    <result column="MODIFY_BY" jdbcType="OTHER" property="modifyBy" />
+    <result column="MODIFY_TIME" jdbcType="DATE" property="modifyTime" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+    <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+    <result column="REMARK" jdbcType="OTHER" property="remark" />
+    <result column="DRAW_TIME" jdbcType="VARCHAR" property="drawTime" />
+    <result column="FORMAT" jdbcType="VARCHAR" property="format" />
+    <result column="COME_OUT_TIME" jdbcType="VARCHAR" property="comeOutTime" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, LOTTERY_CODE, LOTTERY_NAME, CON_ISSUE_NUM, STOP_ADD_ISSUE, LOTTERY_LOGO_URL, 
+    ADMIN_CATEGORY, LOTTERY_CATEGORY, SALE_STATUS, AREA, AUTO_TYPE, SYN_ISSUE, SALE_TIME, 
+    BUY_END_TIME, SPLIT_MAX_NUM, END_CHECK_TIME, SPLIT_MAX_AMOUNT, START_SAIL_TIME, END_SAIL_TIME, 
+    SAIL_DAY_CYCLE, VACATIONS, CREATE_BY, MODIFY_BY, MODIFY_TIME, UPDATE_TIME, CREATE_TIME, 
+    REMARK, DRAW_TIME, FORMAT, COME_OUT_TIME
+  </sql>
+    <sql id="selectAll">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM LOTTERY_TYPE
+    </sql>
+    <sql id="comm_condition">
+        <if test="saleStatus != null">
+            AND SALE_STATUS = #{saleStatus}
+        </if>
+    </sql>
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.hhly.skeleton.user.vo.LotteryTypeVO">
+        SELECT
+        lt.ID,
+        lt.LOTTERY_CODE,
+        lt.LOTTERY_NAME
+        <if test="showSwitch != null">
+            ,(select count(*) from Operate_Msg_Config_Lottery omcl where omcl.lottery_code = lt.lottery_code and omcl.app = 0 AND type = #{firstId} and omcl.user_id = #{userId}) count
+        </if>
+        FROM LOTTERY_TYPE lt
+        WHERE LOTTERY_CATEGORY != 2
+        <include refid="comm_condition"/>
+    </select>
+</mapper>

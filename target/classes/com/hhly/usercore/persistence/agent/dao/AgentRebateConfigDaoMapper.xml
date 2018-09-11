@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhly.usercore.persistence.agent.dao.AgentRebateConfigDaoMapper">
+  <resultMap id="BaseResultMap" type="com.hhly.usercore.persistence.agent.po.AgentRebateConfigPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="rebate_id" jdbcType="INTEGER" property="rebateId" />
+    <result column="direct_min_money" jdbcType="DECIMAL" property="directMinMoney" />
+    <result column="direct_max_money" jdbcType="DECIMAL" property="directMaxMoney" />
+    <result column="direct_ratio" jdbcType="DECIMAL" property="directRatio" />
+    <result column="agent_min_money" jdbcType="DECIMAL" property="agentMinMoney" />
+    <result column="agent_max_money" jdbcType="DECIMAL" property="agentMaxMoney" />
+    <result column="agent_ratio" jdbcType="DECIMAL" property="agentRatio" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List">
+    id, rebate_id, direct_min_money, direct_max_money, direct_ratio, agent_min_money, 
+    agent_max_money, agent_ratio, create_by, create_time
+  </sql>
+ 
+  <select id="findTemplate" resultMap="BaseResultMap">
+	select 
+	b.direct_min_money, b.direct_max_money, b.direct_ratio,
+	b.agent_min_money, b.agent_max_money, b.agent_ratio 
+	from agent_rebate_config b left join 
+	 agent_rebate a on a.id = b.rebate_id  
+	where a.default_flag = 1 	
+  </select>
+
+  <insert id="insertBatch">
+    insert into agent_rebate_config (rebate_id, direct_min_money, 
+      direct_max_money, direct_ratio, agent_min_money, 
+      agent_max_money, agent_ratio, create_by, 
+      create_time)
+      values 
+    	<foreach collection="list" separator="," item="item" close=";">
+		  (#{item.rebateId,jdbcType=INTEGER}, #{item.directMinMoney,jdbcType=DECIMAL}, 
+	      #{item.directMaxMoney,jdbcType=DECIMAL}, #{item.directRatio,jdbcType=DECIMAL}, #{item.agentMinMoney,jdbcType=DECIMAL}, 
+	      #{item.agentMaxMoney,jdbcType=DECIMAL}, #{item.agentRatio,jdbcType=DECIMAL}, #{item.createBy,jdbcType=VARCHAR}, 
+	      now())            
+       </foreach>      
+  </insert>
+ 
+</mapper>

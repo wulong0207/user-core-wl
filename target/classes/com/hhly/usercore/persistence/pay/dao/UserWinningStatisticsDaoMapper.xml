@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhly.usercore.persistence.pay.dao.UserWinningStatisticsDaoMapper">
+
+	<select id="findHomeWin" resultType="com.hhly.skeleton.user.bo.UserWinInfoBO">
+		select userName ,FLOOR(winInfo) as winInfo from 
+		(
+			select (ifnull(sum(AGENT_WINNING_MONEY),0)+ifnull(sum(JOIN_WINNING_MONEY),0)+ifnull(sum(FOLLOW_WINNING_MONEY),0)+ifnull(sum(ADD_WINNING_MONEY),0)) as winInfo ,ACCOUNT_NAME as userName 
+			from M_USER_WINNING_STATISTICS left join M_USER_INFO on user_id = M_USER_INFO.id group by user_id ORDER BY winInfo desc
+		) t limit 10
+	</select>
+
+
+
+	<select id="queryUserWinByLottery" parameterType="com.hhly.skeleton.user.vo.UserWinInfoVO" resultType="com.hhly.skeleton.user.bo.UserWinInfoBO">
+		select * from (
+		select (ifnull(AGENT_WINNING_MONEY,0)+ifnull(JOIN_WINNING_MONEY,0)+ifnull(FOLLOW_WINNING_MONEY,0)+ifnull(ADD_WINNING_MONEY,0)) as winInfo , account_name as userName 
+		from M_USER_WINNING_STATISTICS left join M_USER_INFO on user_id = M_USER_INFO.id where lottery_code = #{lotteryCode} ORDER BY winInfo desc
+		) tmp where tmp.winInfo<![CDATA[>]]>0 
+		<if test="startRow != null and pageSize != null">
+			limit #{startRow}, #{pageSize}
+		</if>
+	</select>
+
+	<!--查询用户中奖信息集合-->
+	<select id="queryUserWinInfo" resultType="com.hhly.skeleton.lotto.base.order.bo.UserWinInfoBO">
+		SELECT
+		oi.lottery_code lotteryCode,
+		oi.lottery_name lotteryName,
+		oi.pre_bonus preBonus,
+		(SELECT nick_name
+		FROM m_user_info m
+		WHERE m.ID = oi.user_id) nickname
+		FROM order_info oi
+		WHERE winning_status IN (3, 4) AND order_status = 6
+		AND pre_bonus IS NOT NULL
+		<if test="codeList != null and codeList.size()>0">
+			AND oi.lottery_code IN
+			<foreach collection="codeList" open="(" close=")" separator="," item="lotteryCodes">
+				#{lotteryCodes}
+			</foreach>
+		</if>
+		ORDER BY create_time DESC
+		<choose>
+			<when test="pageSize != null">
+				limit #{pageSize}
+			</when>
+			<otherwise>
+				limit 100
+			</otherwise>
+		</choose>
+	</select>
+	
+</mapper>

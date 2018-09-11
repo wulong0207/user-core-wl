@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhly.usercore.persistence.member.dao.UserWalletDaoMapper">
+  <resultMap id="BaseResultMap" type="com.hhly.usercore.persistence.member.po.UserWalletPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="total_cash_balance" jdbcType="DECIMAL" property="totalCashBalance" />
+    <result column="winning_balance" jdbcType="DECIMAL" property="winningBalance" />
+    <result column="top_80_balance" jdbcType="DECIMAL" property="top80Balance" />
+    <result column="top_20_balance" jdbcType="DECIMAL" property="top20Balance" />
+    <result column="eff_red_balance" jdbcType="DECIMAL" property="effRedBalance" />
+    <result column="ready_red_balance" jdbcType="DECIMAL" property="readyRedBalance" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="display" jdbcType="BIT" property="display" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List">
+    id, user_id, total_cash_balance, winning_balance, top_80_balance, top_20_balance, 
+    eff_red_balance, ready_red_balance, status, update_time, create_time, display, version
+  </sql>
+  <select id="findByUserId" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" />
+  	from m_user_wallet
+  	where user_id = #{userId}
+  </select>
+
+  <!--查询会员渠道钱包列表-->
+  <select id="queryChannelMemberWalletList" parameterType="com.hhly.skeleton.task.order.vo.OrderChannelVO"
+          resultType="com.hhly.skeleton.user.bo.ChannelMemberWalletBO">
+    SELECT
+      mui.channel_open_id channelMemberId,
+      muw.total_cash_balance cashMoney,
+      muw.eff_red_balance redMoney
+    FROM m_user_info mui LEFT JOIN m_user_wallet muw ON mui.id = muw.user_id WHERE mui.channel_id IN
+    (SELECT channel_id FROM cooperate_agency ca WHERE 1=1
+    <choose>
+      <when test="channelTopId !=null">
+        AND ca.market_channel_id = #{channelTopId}
+      </when>
+      <otherwise>
+        AND ca.market_channel_id = (SELECT * FROM (SELECT market_channel_id FROM cooperate_agency WHERE channel_id = #{channelId}) ch)
+      </otherwise>
+    </choose>
+    )
+  </select>
+
+  <insert id="insert" parameterType="com.hhly.usercore.persistence.member.po.UserWalletPO" useGeneratedKeys="true" keyProperty="id">
+    insert into m_user_wallet (user_id, total_cash_balance, 
+      winning_balance, top_80_balance, top_20_balance, 
+      eff_red_balance, ready_red_balance, status, 
+      update_time, create_time, display, 
+      version)
+    values (#{userId,jdbcType=INTEGER}, #{totalCashBalance,jdbcType=DECIMAL}, 
+      #{winningBalance,jdbcType=DECIMAL}, #{top80Balance,jdbcType=DECIMAL}, #{top20Balance,jdbcType=DECIMAL}, 
+      #{effRedBalance,jdbcType=DECIMAL}, #{readyRedBalance,jdbcType=DECIMAL}, #{status,jdbcType=BIT}, 
+      now(), now(), #{display,jdbcType=BIT}, 
+      #{version,jdbcType=INTEGER})
+  </insert>
+</mapper>

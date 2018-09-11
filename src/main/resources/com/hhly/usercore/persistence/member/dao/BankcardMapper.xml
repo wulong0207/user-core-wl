@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hhly.usercore.persistence.member.dao.BankcardMapper" >
+    <resultMap id="BaseResultMap" type="com.hhly.skeleton.pay.bo.PayBankcardBO">
+        <result column="ID" jdbcType="INTEGER" property="id" />
+        <result column="USERID" jdbcType="INTEGER" property="userid" />
+        <result column="REALNAME" jdbcType="VARCHAR" property="realname" />
+        <result column="BANKID" jdbcType="INTEGER" property="bankid" />
+        <result column="BANKNAME" jdbcType="VARCHAR" property="bankname" />
+        <result column="ISDEFAULT" jdbcType="SMALLINT" property="isdefault" />
+        <result column="OPENBANK" jdbcType="INTEGER" property="openbank" />
+        <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+        <result column="CITY" jdbcType="VARCHAR" property="city" />
+        <result column="CARDCODE" jdbcType="VARCHAR" property="cardcode" />
+        <result column="BANKTYPE" jdbcType="SMALLINT" property="banktype" />
+        <result column="OVERDUE" jdbcType="VARCHAR" property="overdue" />
+        <result column="BINDFLAG" jdbcType="SMALLINT" property="bindflag" />
+        <result column="SAFECODE" jdbcType="VARCHAR" property="safecode" />
+        <result column="IP" jdbcType="VARCHAR" property="ip" />
+        <result column="EXT" jdbcType="VARCHAR" property="ext" />
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="STATUS" jdbcType="SMALLINT" property="status" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="open_time" jdbcType="TIMESTAMP" property="openTime"/>
+    </resultMap>
+
+    <resultMap type="com.hhly.skeleton.user.bo.BankCardDetailBO" id="bankResultMap">
+        <result column="ID" jdbcType="INTEGER" property="id" />
+        <result column="USERID" jdbcType="INTEGER" property="userid" />
+        <result column="REALNAME" jdbcType="VARCHAR" property="realname" />
+        <result column="BANKID" jdbcType="INTEGER" property="bankid" />
+        <result column="BANKNAME" jdbcType="VARCHAR" property="bankname" />
+        <result column="ISDEFAULT" jdbcType="INTEGER" property="isdefault" />
+        <result column="OPENBANK" jdbcType="INTEGER" property="openbank" />
+        <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+        <result column="CITY" jdbcType="VARCHAR" property="city" />
+        <result column="CARDCODE" jdbcType="VARCHAR" property="cardcode" />
+        <result column="BANKTYPE" jdbcType="INTEGER" property="banktype" />
+        <result column="OVERDUE" jdbcType="VARCHAR" property="overdue" />
+        <result column="BINDFLAG" jdbcType="INTEGER" property="bindflag" />
+        <result column="SAFECODE" jdbcType="VARCHAR" property="safecode" />
+        <result column="IP" jdbcType="VARCHAR" property="ip" />
+        <result column="EXT" jdbcType="VARCHAR" property="ext" />
+        <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+        <result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+        <result column="STATUS" jdbcType="INTEGER" property="status" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="CNAME" jdbcType="VARCHAR" property="cName" />
+        <result column="BLOGO" jdbcType="VARCHAR" property="blogo" />
+        <result column="SLOGO" jdbcType="VARCHAR" property="slogo" />
+        <result column="CODE" jdbcType="VARCHAR" property="code" />
+    </resultMap>
+
+    <resultMap id="resultMapForMobile" type="com.hhly.skeleton.pay.bo.PayBankcardBO">
+        <result column="ID" jdbcType="INTEGER" property="id" />
+        <result column="USERID" jdbcType="INTEGER" property="userid" />
+        <result column="REALNAME" jdbcType="VARCHAR" property="realname" />
+        <result column="BANKID" jdbcType="INTEGER" property="bankid" />
+        <result column="BANKNAME" jdbcType="VARCHAR" property="bankname" />
+        <result column="ISDEFAULT" jdbcType="SMALLINT" property="isdefault" />
+        <result column="OPENBANK" jdbcType="INTEGER" property="openbank" />
+        <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+        <result column="CITY" jdbcType="VARCHAR" property="city" />
+        <result column="CARDCODE" jdbcType="VARCHAR" property="cardcode" />
+        <result column="BANKTYPE" jdbcType="SMALLINT" property="banktype" />
+        <result column="OVERDUE" jdbcType="VARCHAR" property="overdue" />
+        <result column="BINDFLAG" jdbcType="SMALLINT" property="bindflag" />
+        <result column="SAFECODE" jdbcType="VARCHAR" property="safecode" />
+        <result column="IP" jdbcType="VARCHAR" property="ip" />
+        <result column="EXT" jdbcType="VARCHAR" property="ext" />
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="STATUS" jdbcType="SMALLINT" property="status" />
+        <result column="BLOGO" jdbcType="VARCHAR" property="blogo" />
+        <result column="SLOGO" jdbcType="VARCHAR" property="slogo" />
+    </resultMap>
+    <select id="selectBankCard" resultMap="BaseResultMap" parameterType="com.hhly.skeleton.pay.vo.PayBankcardVO">
+        select
+        <include refid="Base_Column_List"/>
+        from PAY_BANKCARD WHERE
+          STATUS = 1
+        AND USERID = #{userid}
+        <if test="isdefault != null ">
+            AND isdefault = #{isdefault,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="findBankList" resultMap="bankResultMap" parameterType="java.lang.Integer">
+        SELECT
+        pbc.ID,
+        pbc.USERID,
+        pbc.REALNAME,
+        pbc.BANKID,
+        pbc.BANKNAME,
+        pbc.ISDEFAULT,
+        pbc.OPENBANK,
+        pbc.PROVINCE,
+        pbc.CITY,
+        pbc.CARDCODE,
+        pbc.BANKTYPE,
+        pbc.OVERDUE,
+        pbc.BINDFLAG,
+        pbc.SAFECODE,
+        pbc.IP,
+        pbc.EXT,
+        pbc.UPDATE_TIME,
+        pbc.CREATE_TIME,
+        pbc.STATUS,
+        pb.NAME,
+        pb.CNAME,
+        pb.BLOGO,
+        pb.SLOGO,
+        pb.REMARK,
+        pb.CODE
+        FROM PAY_BANKCARD pbc INNER JOIN PAY_BANK pb ON pbc.BANKID = pb.ID
+        WHERE pbc.USERID = #{userId, jdbcType=INTEGER} AND pbc.STATUS = 1
+        ORDER BY pbc.CREATE_TIME DESC
+    </select>
+
+    <sql id="Base_Column_List">
+        ID, USERID, REALNAME, BANKID, BANKNAME, ISDEFAULT, OPENBANK, PROVINCE, CITY, CARDCODE,
+        BANKTYPE, OVERDUE, BINDFLAG, SAFECODE, IP, EXT, UPDATE_TIME, CREATE_TIME, STATUS
+    </sql>
+
+	<insert id="addBankCard" parameterType="com.hhly.usercore.persistence.pay.po.PayBankcardPO" useGeneratedKeys="true" keyProperty="id">
+
+        insert into PAY_BANKCARD (USERID, REALNAME,
+                                  BANKID, BANKNAME, ISDEFAULT,
+                                  OPENBANK, PROVINCE, CITY,
+                                  CARDCODE, BANKTYPE, OVERDUE,
+                                  BINDFLAG, SAFECODE, IP,
+                                  EXT, CREATE_TIME,
+                                  STATUS, mobile, open_time)
+        values (#{userId,jdbcType=DECIMAL}, #{realname,jdbcType=VARCHAR},
+                                            #{bankid,jdbcType=DECIMAL}, #{bankname,jdbcType=VARCHAR}, #{isdefault,jdbcType=SMALLINT},
+                                            #{openbank,jdbcType=DECIMAL}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+                                            #{cardcode,jdbcType=VARCHAR}, #{banktype,jdbcType=SMALLINT}, #{overdue,jdbcType=VARCHAR},
+                #{bindflag,jdbcType=SMALLINT}, #{safecode,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR},
+                #{ext,jdbcType=VARCHAR}, NOW(),
+                #{status,jdbcType=SMALLINT}, #{mobile,jdbcType=VARCHAR}, #{openTime,jdbcType=TIMESTAMP})
+
+    </insert>
+
+    <delete id="deleteByBankCardId" >
+        UPDATE PAY_BANKCARD
+        SET STATUS = 0
+        WHERE ID = #{id} AND USERID = #{userId} AND STATUS = 1
+    </delete>
+
+
+    <update id="updateByBankCardId" parameterType="com.hhly.usercore.persistence.pay.po.PayBankcardPO">
+        update PAY_BANKCARD
+        <set>
+            <if test="record.overdue != null">
+                OVERDUE = #{record.overdue,jdbcType=VARCHAR},UPDATE_TIME = NOW()
+            </if>
+        </set>
+        WHERE id = #{record.id} AND USERID = #{record.userId} and status = 1 and banktype = 2
+    </update>
+    <!-- 关闭或打开快捷支付-->
+    <update id="closeOrOpenQuickPayment" parameterType="com.hhly.usercore.persistence.pay.po.PayBankcardPO">
+        UPDATE PAY_BANKCARD
+        <set>
+            <if test="openbank != null">
+                OPENBANK = #{openbank,jdbcType=VARCHAR},UPDATE_TIME = NOW()
+            </if>
+        </set>
+        WHERE id = #{id} AND USERID = #{userId} and status = 1
+    </update>
+
+	<!-- 更新银行名称 -->
+	<update id="updateBankName" parameterType="com.hhly.usercore.persistence.pay.po.PayBankcardPO">
+		update PAY_BANKCARD
+		<set>
+            UPDATE_TIME = NOW(),
+			<if test="bankname != null">
+				BANKNAME = #{bankname,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=INTEGER}
+	</update>
+	
+    <select id="selectByUserIdAndCardCodeIsExist" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from PAY_BANKCARD WHERE STATUS = 1 AND USERID = #{userId,jdbcType=VARCHAR} AND CARDCODE = #{cardCode,jdbcType=VARCHAR}
+    </select>
+    
+     <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from PAY_BANKCARD
+    </select>
+
+    <!-- 根据用户id查询用户所拥有的银行卡。用于支付展示 -->
+    <select id="findPayBankCardByUserId" resultType="com.hhly.skeleton.pay.bo.PayBankcardBO">
+        SELECT A.*,B.NAME AS fullName,B.CNAME AS simpleName FROM PAY_BANKCARD A
+        INNER JOIN PAY_BANK B ON A.BANKID=B.ID AND B.STATUS=1
+        WHERE A.STATUS=1 and A.USERID = #{userId} 
+        <!-- 根据不同端口的字段进行排序 -->
+        <choose>
+            <when test="orderBy == 'PC'">
+                ORDER BY B.ORDER_PC ASC
+            </when>
+            <when test="orderBy == 'IOS'">
+                ORDER BY B.ORDER_IOS ASC
+            </when>
+            <when test="orderBy == 'Android'">
+                ORDER BY B.ORDER_ANDROID ASC
+            </when>
+            <when test="orderBy == 'H5'">
+                ORDER BY B.ORDER_H5 ASC
+            </when>
+            <!-- 默认使用PC的 -->
+            <otherwise>
+                ORDER BY B.ORDER_PC ASC
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectPaybank" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT slogo
+        FROM pay_bank
+        WHERE id = #{id}
+    </select>
+    
+    <select id="selectBankCardForMobile" parameterType="com.hhly.skeleton.pay.vo.PayBankcardVO" resultMap="resultMapForMobile">
+        select
+        pbc.*,BLOGO,SLOGO
+        from PAY_BANKCARD pbc,PAY_BANK pb
+        WHERE pbc.STATUS = 1
+        AND pb.id=BANKID
+        AND pbc.USERID = #{userid}
+    </select>
+    <select id="selectForMobileBlance" parameterType="java.lang.Integer" resultType="com.hhly.skeleton.pay.bo.PayBankCardH5BO">
+        SELECT
+        muw.total_cash_balance totalCashBalance ,muw.eff_red_balance effRedBalance,
+        (
+        select count(oc.id) from OPERATE_COUPON oc where 1=1
+        and oc.user_id = muw.user_id
+        and (oc.red_status = 1 or oc.red_status = 3)
+        <![CDATA[
+            and 0<(oc.red_overdue_time - NOW())
+            and (oc.red_overdue_time - NOW())<7
+            ) expireCount
+        ]]>
+        FROM
+        M_USER_WALLET muw where 1=1
+        and muw.user_id = ${userId}
+    </select>
+
+    <!--  根据银行卡ID获取用户银行卡信息 -->
+	<select id="getUserBankById" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PAY_BANKCARD WHERE USERID=#{userId} and ID = #{id}
+	</select>
+	
+	<!-- 完善资料送: 统计与用户相同银行卡的卡数 -->
+  	<select id="countUserSameBankCard" resultType="int">
+  		select count(*) from pay_bankcard pbc where pbc.cardcode in (select pbc.cardcode from pay_bankcard pbc where pbc.userid=#{userId})
+  	</select>
+
+    <update id="updateDefault" parameterType="com.hhly.usercore.persistence.pay.po.PayBankcardPO">
+        update PAY_BANKCARD pb set pb.isdefault = 1 where pb.userid = #{userId}
+        <if test="cardcode != null">
+            and pb.cardcode != #{cardcode}
+        </if>
+    </update>
+    <update id="updateDisableDefault" parameterType="com.hhly.usercore.persistence.pay.po.PayBankcardPO">
+        update PAY_BANKCARD pb set pb.isdefault = 0 where pb.userid = #{userId}
+        <if test="cardcode != null">
+            and pb.cardcode != #{cardcode}
+        </if>
+    </update>
+    <update id="updateOpenMobile" parameterType="com.hhly.usercore.persistence.pay.po.PayBankcardPO">
+        UPDATE PAY_BANKCARD pb
+        SET pb.mobile = #{mobile}, open_time = NOW()
+        WHERE pb.userid = #{userId} AND pb.id != #{id} AND pb.status = 1
+    </update>
+
+</mapper>

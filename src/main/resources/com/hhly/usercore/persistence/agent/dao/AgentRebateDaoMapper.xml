@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhly.usercore.persistence.agent.dao.AgentRebateDaoMapper">
+  <resultMap id="BaseResultMap" type="com.hhly.usercore.persistence.agent.po.AgentRebatePO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="agent_id" jdbcType="INTEGER" property="agentId" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="default_flag" jdbcType="BIT" property="defaultFlag" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List">
+    id, agent_id, add_time, default_flag, create_by, create_time, update_by, update_time, 
+    remark
+  </sql>
+  
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from agent_rebate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  
+  <insert id="insert" parameterType="com.hhly.usercore.persistence.agent.po.AgentRebatePO" 
+   useGeneratedKeys="true" keyProperty="id">
+    insert into agent_rebate (agent_id, add_time, 
+      default_flag, create_by, create_time,remark)
+    values (#{agentId,jdbcType=INTEGER}, now(), 
+      #{defaultFlag,jdbcType=BIT}, #{createBy,jdbcType=VARCHAR}, now(), 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+
+</mapper>

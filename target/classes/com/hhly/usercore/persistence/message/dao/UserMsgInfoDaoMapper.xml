@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhly.usercore.persistence.message.dao.UserMsgInfoDaoMapper">
+  <resultMap id="MsgInfoMap" type="com.hhly.skeleton.user.bo.UserMsgInfoBO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+    <result column="cus_mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="template_id" jdbcType="INTEGER" property="templateId" />
+    <result column="template_name" jdbcType="VARCHAR" property="templateName" />
+    <result column="send_type" jdbcType="VARCHAR" property="sendType" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="send_error" jdbcType="VARCHAR" property="sendError" />
+    <result column="msg_title" jdbcType="VARCHAR" property="msgTitle" />
+    <result column="msg_content" jdbcType="VARCHAR" property="msgContent" />
+    <result column="msg_batch" jdbcType="VARCHAR" property="msgBatch" />
+    <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
+    <result column="read_time" jdbcType="TIMESTAMP" property="readTime" />
+    <result column="msg_desc" jdbcType="VARCHAR" property="msgDesc" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="pre_send_time" jdbcType="TIMESTAMP" property="preSendTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="msg_type" jdbcType="INTEGER" property="msgType" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+      id, nick_name, account_name, account_name, cus_mobile, template_id,
+      template_name, send_type, status, send_error, msg_title, msg_content,
+      msg_batch, send_time, read_time, msg_desc, pre_send_time, user_id, msg_type,
+      create_by, create_time
+  </sql>
+
+  <select id="findMsgInfo" resultMap="MsgInfoMap">
+    SELECT
+      omi.id,
+      omi.template_id,
+      omi.template_name,
+      omi.msg_type,
+      omi.status,
+      omi.msg_title,
+      omi.msg_content,
+      omi.msg_desc,
+      omi.send_time,
+      omi.msg_batch,
+      omt.type_node typeNode
+    FROM
+      operate_msg_info omi
+    LEFT JOIN
+      operate_msg_template omt
+    ON
+      omi.template_id = omt.id
+    WHERE
+      omi.user_id = #{userId, jdbcType=INTEGER}
+    AND omi.send_type = #{sendType, jdbcType=VARCHAR}
+    <![CDATA[
+      AND DATE_SUB(CURDATE(),INTERVAL 1 MONTH) < DATE(omi.send_time)
+    ]]>
+    <if test="msgType != null and msgType != 0">
+      <choose>
+        <when test="msgType == 2">
+          AND omi.msg_type IN (2,4,5)
+        </when>
+        <when test="msgType == 3">
+          AND omi.msg_type IN (3,8)
+        </when>
+        <otherwise>
+          AND omi.msg_type = #{msgType, jdbcType=INTEGER}
+        </otherwise>
+      </choose>
+    </if>
+    <choose>
+      <when test="sendType==1">
+        AND omi.status IN (0,5)
+      </when>
+      <otherwise>
+        AND omi.status IN (1,5)
+      </otherwise>
+    </choose>
+    ORDER BY omi.create_time DESC
+    <if test="startRow != null and pageSize != null">
+      limit #{startRow},#{pageSize}
+    </if>
+  </select>
+
+  <select id="findMsgInfoTotal" resultType="java.lang.Integer">
+    SELECT
+      count(1)
+    FROM
+      operate_msg_info omi
+    LEFT JOIN
+      operate_msg_template omt
+    ON
+      omi.template_id = omt.id
+    WHERE
+    omi.user_id = #{userId, jdbcType=INTEGER}
+    AND omi.send_type = #{sendType, jdbcType=VARCHAR}
+    <![CDATA[
+      AND DATE_SUB(CURDATE(),INTERVAL 1 MONTH) < DATE(omi.send_time)
+    ]]>
+    <if test="msgType!=null and msgType != 0">
+      <choose>
+        <when test="msgType == 2">
+          AND omi.msg_type IN (2,4,5)
+        </when>
+        <when test="msgType == 3">
+          AND omi.msg_type IN (3,8)
+        </when>
+        <otherwise>
+          AND omi.msg_type = #{msgType, jdbcType=INTEGER}
+        </otherwise>
+      </choose>
+    </if>
+    <choose>
+      <when test="sendType==1">
+        AND omi.status IN (0,5)
+      </when>
+      <otherwise>
+        AND omi.status IN (1,5)
+      </otherwise>
+    </choose>
+  </select>
+
+  <select id="findMsgInfoMenu" resultType="com.hhly.skeleton.user.bo.UserMsgInfoBO">
+    SELECT
+      omt.msg_type,
+      count(omi.id)
+    FROM
+    (
+      SELECT
+        msg_type
+      FROM
+        operate_msg_template
+      GROUP BY
+        msg_type
+    ) omt
+    LEFT JOIN operate_msg_info omi ON omt.msg_type = omi.msg_type
+    AND omi.user_id = #{userId}
+    AND omi.send_type = #{sendType}
+    <![CDATA[
+      AND DATE_SUB(CURDATE(),INTERVAL 1 MONTH) < DATE(omi.send_time)
+    ]]>
+    <choose>
+      <when test="sendType==1">
+        AND omi.status = 0
+      </when>
+      <otherwise>
+        AND omi.status = 1
+      </otherwise>
+    </choose>
+    GROUP BY
+      omt.msg_type
+  </select>
+
+
+  <!--查询账户消息未读条数-->
+  <select id="findMsgInfoCount" resultType="java.lang.Integer">
+    SELECT
+    count(1) msgCount
+    FROM operate_msg_info omi LEFT JOIN operate_msg_template omt ON omi.template_id = omt.id
+    WHERE
+    omi.user_id = #{userId, jdbcType=INTEGER}
+    AND omi.send_type = #{sendType, jdbcType=VARCHAR}
+    <![CDATA[
+      AND DATE_SUB(CURDATE(),INTERVAL 1 MONTH) < DATE(omi.send_time)
+    ]]>
+    <if test="msgType != null and msgType != 0">
+      <choose>
+        <when test="msgType == 2">
+          AND omi.msg_type IN (2,4,5)
+        </when>
+        <when test="msgType == 3">
+          AND omi.msg_type IN (3,8)
+        </when>
+        <otherwise>
+          AND omi.msg_type = #{msgType, jdbcType=INTEGER}
+        </otherwise>
+      </choose>
+    </if>
+    <choose>
+      <when test="sendType==1">
+        AND omi.status = 0
+      </when>
+      <otherwise>
+        AND omi.status = 1
+      </otherwise>
+    </choose>
+  </select>
+
+  <select id="findMsgSwitch" resultType="com.hhly.skeleton.user.bo.UserMsgConfigBO">
+    SELECT t.* FROM(
+      SELECT
+      NULL id,
+      omt.id templateId,
+      omt.type_name templateName,
+      omt.msg_type msgType,
+      omt.type_node typeNode,
+      1 switchStatus,
+      omt.type_desc typeDesc
+      FROM
+      operate_msg_template omt
+      WHERE
+      omt. STATUS = 1
+      <include refid="App_Condition_Column_List"/>
+      AND omt.msg_type != 5
+      AND omt.id NOT IN (
+        SELECT
+        omt.id templateId
+        FROM
+        operate_msg_config omc
+        LEFT JOIN operate_msg_template omt ON omc.template_id = omt.id
+        WHERE
+        omc.user_id =  #{userId, jdbcType=INTEGER}
+        AND omt. STATUS = 1
+        <include refid="App_Condition_Column_List"/>
+        AND omt.msg_type != 5
+      )
+      UNION
+      SELECT
+      omc.id id,
+      omt.id templateId,
+      omt.type_name templateName,
+      omt.msg_type msgType,
+      omt.type_node typeNode,
+      omc.app switchStatus,
+      omt.type_desc typeDesc
+      FROM
+      operate_msg_config omc
+      LEFT JOIN operate_msg_template omt ON omc.template_id = omt.id
+      WHERE
+      omc.user_id = #{userId, jdbcType=INTEGER}
+      AND omt.STATUS = 1
+      <include refid="App_Condition_Column_List"/>
+      AND omt.msg_type != 5
+    ) t
+    <if test="sendType ==1">
+      where t.typeNode != '14'
+    </if>
+    GROUP BY t.typeNode;
+  </select>
+
+  <select id="findMsgLotterySwitch" resultType="com.hhly.skeleton.user.bo.UserMsgConfigBO">
+    SELECT
+    null id,
+    lt.lottery_code lotteryCode,
+    lt.lottery_name typeName,
+    1 type,
+    1 switchStatus
+    FROM
+    lottery_type lt
+    WHERE
+    lt.lottery_category = 1
+    AND lt.lottery_code != 106
+    AND lt.lottery_code NOT IN (
+    SELECT
+    lt.lottery_code
+    FROM
+    operate_msg_config_lottery oml
+    LEFT JOIN lottery_type lt ON oml.lottery_code = lt.lottery_code
+    WHERE
+    lt.lottery_category = 1
+    AND oml.user_id = #{userId, jdbcType=INTEGER}
+    AND oml.lottery_code != 106
+    <if test="type != null">
+      AND type = #{type}
+    </if>
+    )
+    UNION
+    SELECT
+    oml.id id,
+    lt.lottery_code lotteryCode,
+    lt.lottery_name typeName,
+    oml.type type,
+    oml.app switchStatus
+    FROM
+    operate_msg_config_lottery oml
+    LEFT JOIN lottery_type lt ON oml.lottery_code = lt.lottery_code
+    WHERE
+    lt.lottery_category = 1
+    AND oml.user_id = #{userId, jdbcType=INTEGER}
+    AND oml.lottery_code != 106
+    <if test="type != null">
+      AND type = #{type}
+    </if>
+  </select>
+
+  <update id="updateMsgInfoStatus" parameterType="com.hhly.skeleton.user.vo.UserMsgInfoVO">
+    UPDATE
+    operate_msg_info
+    SET
+    status = 5
+    WHERE
+    user_id = #{userId, jdbcType=INTEGER}
+    AND msg_batch IN
+    <foreach collection="batchList" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </update>
+
+  <update id="updateAppMsgInfoStatus" parameterType="com.hhly.skeleton.user.vo.UserMsgInfoVO">
+    UPDATE
+    operate_msg_info
+    SET
+    status = 5
+    WHERE 1=1
+    <choose>
+      <when test="sendType==1">
+        AND status = 0
+      </when>
+      <otherwise>
+        AND status = 1
+      </otherwise>
+    </choose>
+    AND template_id IN (
+      SELECT
+      omt.id
+      FROM
+      operate_msg_template omt
+      WHERE 1 = 1
+      <choose>
+        <when test="msgType==2">
+          AND msg_type IN (2,4,5)
+        </when>
+        <when test="msgType==3">
+          AND msg_type IN (3,8)
+        </when>
+        <otherwise>
+          AND msg_type = #{msgType, jdbcType=INTEGER}
+        </otherwise>
+      </choose>
+    )
+    AND user_id = #{userId, jdbcType=INTEGER}
+    AND send_type = #{sendType, jdbcType=VARCHAR}
+  </update>
+
+  <insert id="addSwitch" parameterType="com.hhly.skeleton.user.vo.UserMsgConfigVO">
+    INSERT INTO
+    operate_msg_config
+    (
+    template_id,
+    user_id,
+    mob,
+    site,
+    app,
+    wechat
+    )
+    VALUES
+    (
+    #{templateId, jdbcType=INTEGER},
+    #{userId, jdbcType=INTEGER},
+    #{switchStatus, jdbcType=INTEGER},
+    #{switchStatus, jdbcType=INTEGER},
+    #{switchStatus, jdbcType=INTEGER},
+    #{switchStatus, jdbcType=INTEGER}
+    )
+  </insert>
+
+  <update id="updateSwitch" parameterType="com.hhly.skeleton.user.vo.UserMsgConfigVO">
+    UPDATE
+    operate_msg_config
+    SET
+    mob = #{switchStatus, jdbcType=INTEGER},
+    site = #{switchStatus, jdbcType=INTEGER},
+    app = #{switchStatus, jdbcType=INTEGER},
+    wechat = #{switchStatus, jdbcType=INTEGER}
+    WHERE
+    user_id = #{userId, jdbcType=INTEGER}
+    AND template_id IN (
+    SELECT omt.id FROM operate_msg_template omt WHERE omt.type_node = #{typeNode, jdbcType=VARCHAR}
+    )
+  </update>
+
+  <insert id="recoverDefault" parameterType="java.util.List">
+    INSERT INTO
+    operate_msg_config
+    (id, template_id, user_id, mob, site, app, wechat)
+    VALUES
+    <foreach collection="list" item="vo" separator=",">
+      (
+      #{vo.id, jdbcType=INTEGER},
+      #{vo.templateId, jdbcType=INTEGER},
+      #{vo.userId, jdbcType=INTEGER},
+      1,1,1,1
+      )
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+    mob = 1,
+    site = 1,
+    app = 1,
+    wechat = 1
+  </insert>
+
+  <insert id="updateLotterySwitchStatus" parameterType="java.util.List">
+    INSERT INTO
+    operate_msg_config_lottery
+    (id, lottery_code, type, app, user_id)
+    VALUES
+    <foreach collection="list" item="vo" separator=",">
+      (
+      #{vo.id, jdbcType=INTEGER},
+      #{vo.lotteryCode, jdbcType=INTEGER},
+      #{vo.type, jdbcType=INTEGER},
+      #{vo.switchStatus, jdbcType=INTEGER},
+      #{vo.userId, jdbcType=INTEGER}
+      )
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+    app = values(app)
+  </insert>
+
+  <delete id="deleteMsgInfoById" parameterType="com.hhly.skeleton.user.vo.UserMsgInfoVO">
+    DELETE FROM
+    operate_msg_info
+    WHERE
+    user_id = #{userId, jdbcType=INTEGER}
+    AND msg_batch IN
+    <foreach collection="batchList" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </delete>
+
+  <delete id="deleteMsgInfo" parameterType="com.hhly.skeleton.user.vo.UserMsgInfoVO">
+    DELETE
+    FROM
+    operate_msg_info
+    WHERE 1=1
+    <choose>
+      <when test="sendType==1">
+        AND status IN (0,5)
+      </when>
+      <otherwise>
+        AND status IN (1,5)
+      </otherwise>
+    </choose>
+    AND template_id IN (
+      SELECT
+      omt.id
+      FROM
+      operate_msg_template omt
+      WHERE 1 = 1
+      <choose>
+        <when test="msgType==2">
+          AND msg_type IN (2,4,5)
+        </when>
+        <when test="msgType==3">
+          AND msg_type IN (3,8)
+        </when>
+        <otherwise>
+          AND msg_type = #{msgType, jdbcType=INTEGER}
+        </otherwise>
+      </choose>
+    )
+    AND user_id = #{userId, jdbcType=INTEGER}
+    AND send_type = #{sendType, jdbcType=VARCHAR}
+  </delete>
+
+  <select id="findMsgDic" resultType="com.hhly.skeleton.lotto.base.dic.bo.DicDataDetailBO">
+    SELECT
+    dic_data_value dicDataValue,
+    dic_data_name dicDataName
+    FROM
+    dic_data_detail
+    WHERE
+    dic_code = #{dicCode, jdbcType=VARCHAR}
+    AND status = 1
+    ORDER BY dic_data_value
+  </select>
+
+  <select id="findOrderInfo" resultType="com.hhly.skeleton.user.bo.UserMsgInfoBO">
+    SELECT
+      lottery_code lotteryCode,
+      lottery_name lotteryName,
+      order_amount betMoney,
+      pre_bonus winMoney,
+      create_time betTime,
+      buy_type buyType,
+      order_code orderCode,
+      lottery_issue issueCode
+    FROM order_info WHERE order_code =#{orderCode, jdbcType=VARCHAR}
+  </select>
+
+  <sql id="App_Condition_Column_List">
+    <choose>
+      <when test="typeNode == 1">
+        AND omt.msg_type = 7
+      </when>
+      <when test="typeNode == 2">
+        AND omt.msg_type = 4
+      </when>
+      <when test="typeNode == 3">
+        AND omt.msg_type = 2
+      </when>
+      <when test="typeNode == 4">
+        AND omt.msg_type = 6
+        AND omt.type_node != '7'
+      </when>
+      <when test="typeNode == 5">
+        AND omt.msg_type = 8
+      </when>
+      <when test="typeNode == 6">
+        AND omt.msg_type = 5
+      </when>
+    </choose>
+  </sql>
+
+  <sql id="Send_Type_Column">
+    <choose>
+      <when test="sendType==1">
+        AND omi.status IN (0,5)
+      </when>
+      <otherwise>
+        AND omi.status IN (1,5)
+      </otherwise>
+    </choose>
+  </sql>
+</mapper>

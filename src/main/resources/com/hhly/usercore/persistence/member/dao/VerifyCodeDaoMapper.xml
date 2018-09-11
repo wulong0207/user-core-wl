@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hhly.usercore.persistence.member.dao.VerifyCodeDaoMapper">
+	<resultMap type="com.hhly.skeleton.user.bo.UserMessageBO" id="BaseResultMap">
+		<result column="ID" property="id" jdbcType="INTEGER"/>
+		<result column="USER_ID" property="userId" jdbcType="INTEGER"/>
+		<result column="ACCOUNT" property="account" jdbcType="VARCHAR"/>
+		<result column="CODE" property="code" jdbcType="VARCHAR"/>
+		<result column="MESSAGE" property="message" jdbcType="VARCHAR"/>
+		<result column="MESSAGE_TYPE" property="messageType" jdbcType="INTEGER"/>
+		<result column="STATUS" property="status" jdbcType="INTEGER"/>
+		<result column="TYPE" property="type" jdbcType="INTEGER"/>
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 注册 - 用手机号查询验证码 -->
+	<select id="findVerifyCode" resultMap="BaseResultMap" parameterType="com.hhly.skeleton.user.vo.UserMessageVO">
+		SELECT 
+			ID,
+			USER_ID,
+			ACCOUNT,
+			CODE,
+			MESSAGE,
+			MESSAGE_TYPE,
+			STATUS,
+			TYPE,
+			VALID,
+			CREATE_TIME,
+			UPDATE_TIME
+		FROM M_USER_MESSAGE WHERE 1=1
+		<if test="account != null">
+			AND ACCOUNT = #{account, jdbcType=VARCHAR}
+		</if>
+		<if test="code != null">
+			AND CODE = #{code, jdbcType=VARCHAR}
+		</if>
+		<if test="messageType != null">
+			AND MESSAGE_TYPE = #{messageType, jdbcType=INTEGER}
+		</if>
+		AND valid = 1
+		<![CDATA[
+           AND CREATE_TIME> curdate()  and CREATE_TIME< date_add(curdate(),INTERVAL +1 DAY )
+        ]]>
+		ORDER BY CREATE_TIME DESC
+	</select>
+	
+	<!-- 根据条件查询一天发送短信的条数 -->
+	<select id="findVerifyCodeCount" resultType="INTEGER" parameterType="com.hhly.skeleton.user.vo.UserMessageVO">
+		SELECT count(*) FROM M_USER_MESSAGE WHERE 1=1
+		<if test="account != null">
+			AND ACCOUNT = #{account}
+		</if>
+		<if test="type != null">
+			AND TYPE = #{type}
+		</if>
+		<if test="messageType != null">
+			AND MESSAGE_TYPE = #{messageType}
+		</if>
+		AND valid = 1
+		<![CDATA[
+           AND CREATE_TIME> curdate()  and CREATE_TIME< date_add(curdate(),INTERVAL +1 DAY )
+        ]]>
+	</select>
+	
+	<select id="findPreviousCode" resultMap="BaseResultMap" parameterType="com.hhly.skeleton.user.vo.UserMessageVO">
+		SELECT
+			ID,
+			USER_ID,
+			ACCOUNT,
+			CODE,
+			MESSAGE,
+			MESSAGE_TYPE,
+			STATUS,
+			TYPE,
+			VALID,
+			CREATE_TIME,
+			UPDATE_TIME
+		FROM m_user_message WHERE 1=1
+		<if test="account != null">
+			AND ACCOUNT = #{account}
+		</if>
+		<if test="messageType != null">
+			 AND MESSAGE_TYPE = #{messageType}
+		</if>
+		<if test="status != null">
+			AND STATUS = #{status}
+		</if>
+		AND valid = 1
+		<![CDATA[
+			AND CREATE_TIME> curdate()  and CREATE_TIME< date_add(curdate(),INTERVAL +1 DAY )
+        ]]>
+		ORDER BY CREATE_TIME DESC LIMIT 1
+	</select>
+
+	
+	<!-- 修改验证码状态 -->
+	<update id="updateVerifyCodeStatus" parameterType="com.hhly.usercore.persistence.message.po.UserMessagePO">
+		UPDATE M_USER_MESSAGE SET
+			STATUS = #{status, jdbcType=INTEGER},
+			UPDATE_TIME = now()
+		WHERE 1=1
+		<if test="account != null">
+			AND ACCOUNT = #{account, jdbcType=VARCHAR}
+		</if>
+		<if test="code != null">
+			AND CODE = #{code, jdbcType=VARCHAR}
+		</if>
+		AND valid = 1
+	</update>
+	
+	<!-- 验证码入库 -->
+	<insert id="addVerifyCode" parameterType="com.hhly.usercore.persistence.message.po.UserMessagePO">
+
+        INSERT INTO M_USER_MESSAGE
+        (
+            USER_ID,
+            ACCOUNT,
+            CODE,
+            MESSAGE,
+            MESSAGE_TYPE,
+            STATUS,
+            TYPE,
+            valid,
+            create_time,
+            update_time
+        )
+        VALUES
+            (
+                #{userId, jdbcType=INTEGER},
+                #{account, jdbcType=VARCHAR},
+                #{code, jdbcType=VARCHAR},
+                #{message, jdbcType=VARCHAR},
+                #{messageType, jdbcType=INTEGER},
+                #{status, jdbcType=INTEGER},
+                #{type, jdbcType=INTEGER},
+                1,
+                NOW(),
+                NOW()
+            )
+	</insert>
+
+</mapper>
